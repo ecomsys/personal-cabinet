@@ -1,0 +1,6 @@
+# Игнорировать node_modules везде
+node_modules/
+
+# Если вдруг есть node_modules в подпапках
+front/node_modules/
+back/node_modules/
