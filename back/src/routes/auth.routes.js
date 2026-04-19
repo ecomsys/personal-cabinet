@@ -1,16 +1,32 @@
-import express from "express"
+import express from "express";
 import {
-    registerController,
-    loginController,
-    logoutController,
-    refreshController
-} from "../controllers/auth.controller.js"
+  registerController,
+  loginController,
+  logoutController,
+  refreshController,
+} from "../controllers/auth.controller.js";
 
-const router = express.Router()
+import rateLimit from "express-rate-limit";
+import {
+  registerLimiter,
+  loginLimiter,
+  refreshLimiter,
+} from "../utils/limits.js";
 
-router.post("/register", registerController)
-router.post("/login", loginController)
-router.post("/refresh", refreshController)
-router.post("/logout", logoutController)
+import { validate } from "../middleware/validate.middleware.js";
+import { registerSchema, loginSchema } from "../validators/auth.validator.js";
 
-export default router
+const router = express.Router();
+
+router.post(
+  "/register",
+  registerLimiter,
+  validate(registerSchema),
+  registerController,
+);
+router.post("/login", loginLimiter, validate(loginSchema), loginController);
+
+router.post("/refresh", refreshLimiter, refreshController);
+router.post("/logout", logoutController);
+
+export default router;

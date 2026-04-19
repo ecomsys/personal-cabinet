@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 async function createAdmin() {
   const email = 'webpolka@gmail.com'
-  const password = '1234'
+  const password = '123456'
 
   const hashedPassword = await bcrypt.hash(password, 10)
 

@@ -6,7 +6,7 @@ async function resetAll() {
   console.log('Cleaning database...')
 
   // 1. удаляем токены
-  await prisma.token.deleteMany()
+  await prisma.session.deleteMany()
 
   // 2. удаляем пользователей
   await prisma.user.deleteMany()
@@ -15,7 +15,7 @@ async function resetAll() {
 
   // 3. создаём админа заново
   const email = 'webpolka@gmail.com'
-  const password = '1234'
+  const password = '123456'
 
   const hash = await bcrypt.hash(password, 10)
 

@@ -1,115 +1,151 @@
-import { prisma } from "../config/prisma.js"
-import { hashPassword, comparePassword } from "../utils/hash.js"
-import { generateTokens } from "../utils/jwt.js"
-import { ApiError } from "../utils/api-error.js"
+import { prisma } from "../config/prisma.js";
+import { hashPassword, comparePassword } from "../utils/hash.js";
+import { generateTokens } from "../utils/jwt.js";
+import { ApiError } from "../utils/api-error.js";
 
+import jwt from "jsonwebtoken";
+
+const ACCESS_SECRET = process.env.ACCESS_SECRET;
+const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 // register service
-export const register = async (email, password) => {
-  const exist = await prisma.user.findUnique({ where: { email } })
-  if (exist) throw new ApiError(409, "User already exists", "AUTH_USER_EXISTS")
+export const register = async (email, password, meta) => {
+  const exist = await prisma.user.findUnique({ where: { email } });
+  if (exist) throw new ApiError(409, "User already exists", "AUTH_USER_EXISTS");
 
-  const hashed = await hashPassword(password)
+  const hashed = await hashPassword(password);
 
   const user = await prisma.user.create({
     data: {
       email,
-      password: hashed
-    }
-  })
+      password: hashed,
+    },
+  });
 
   const tokens = generateTokens({
     id: user.id,
     email: user.email,
-    role: user.role
-  })
+    role: user.role,
+  });
 
-  await prisma.token.create({
+  await prisma.session.create({
     data: {
       userId: user.id,
-      refreshToken: tokens.refreshToken
-    }
-  })
+      refreshToken: tokens.refreshToken,
+      userAgent: meta?.userAgent,
+      ip: meta?.ip,
+    },
+  });
 
-  return { user, tokens }
-}
+  return { user, tokens };
+};
 
 // login service
-export const login = async (email, password) => {
-  const user = await prisma.user.findUnique({ where: { email } })
+export const login = async (email, password, meta) => {
+  const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new ApiError(404, "User not found", "AUTH_USER_NOT_FOUND")
+    throw new ApiError(404, "User not found", "AUTH_USER_NOT_FOUND");
   }
 
-  const isValid = await comparePassword(password, user.password)
+  const isValid = await comparePassword(password, user.password);
   if (!isValid) {
-    throw new ApiError(401, "Wrong password", "AUTH_INVALID_PASSWORD")
+    throw new ApiError(401, "Wrong password", "AUTH_INVALID_PASSWORD");
   }
 
   const tokens = generateTokens({
     id: user.id,
     email: user.email,
-    role: user.role
-  })
+    role: user.role,
+  });
 
   // 1. сначала чистим старые сессии
-  await prisma.token.deleteMany({
-    where: { userId: user.id }
-  })
+  await prisma.session.deleteMany({
+    where: { userId: user.id },
+  });
 
-  // 2. потом создаём новую
-  await prisma.token.create({
+  await prisma.session.create({
     data: {
       userId: user.id,
-      refreshToken: tokens.refreshToken
-    }
-  })
+      refreshToken: tokens.refreshToken,
+      userAgent: meta?.userAgent,
+      ip: meta?.ip,
+    },
+  });
 
-  return { user, tokens }
-}
-
+  return { user, tokens };
+};
 
 // refresh service
-export const refresh = async (refreshToken) => {
+export const refresh = async (refreshToken, meta) => {
   if (!refreshToken) {
-    throw new ApiError(401, "No refresh token", "AUTH_INVALID_REFRESH_TOKEN")
+    throw new ApiError(
+      401,
+      "Session expired",
+      "AUTH_SESSION_EXPIRED"
+    );
   }
 
-  let userData
+  let userData;
 
   try {
-    userData = jwt.verify(refreshToken, REFRESH_SECRET)
-  } catch (e) {
-    throw new ApiError(401, "Invalid refresh token", "AUTH_INVALID_REFRESH_TOKEN")
+    userData = jwt.verify(refreshToken, REFRESH_SECRET);
+  } catch {
+    throw new ApiError(
+      401,
+      "Session expired",
+      "AUTH_SESSION_EXPIRED"
+    );
   }
 
-  const tokenFromDb = await prisma.token.findFirst({
+  const session = await prisma.session.findFirst({
     where: {
       refreshToken,
-      userId: userData.id
-    }
-  })
+      userId: userData.id,
+      isValid: true,
+    },
+  });
 
-  if (!tokenFromDb) {
-    throw new ApiError(401, "Invalid refresh token", "AUTH_INVALID_REFRESH_TOKEN")
+  if (!session) {
+    throw new ApiError(
+      401,
+      "Session expired",
+      "AUTH_SESSION_EXPIRED"
+    );
   }
 
-  const accessToken = jwt.sign(
-    { id: userData.id, email: userData.email },
-    ACCESS_SECRET,
-    { expiresIn: "15m" }
-  )
+  await prisma.session.delete({
+    where: { id: session.id },
+  });
 
-  return { accessToken }
-}
+  const tokens = generateTokens({
+    id: userData.id,
+    email: userData.email,
+    role: userData.role,
+  });
+
+  await prisma.session.create({
+    data: {
+      userId: userData.id,
+      refreshToken: tokens.refreshToken,
+      userAgent: meta?.userAgent,
+      ip: meta?.ip,
+    },
+  });
+
+  return {
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+  };
+};
+
 
 // logout service
 export const logout = async (refreshToken) => {
   if (refreshToken) {
-    await prisma.token.deleteMany({
-      where: { refreshToken }
-    })
+    await prisma.session.deleteMany({
+      where: { refreshToken },
+    });
   }
 
-  return true
-}
+  return true;
+};

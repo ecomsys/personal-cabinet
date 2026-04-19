@@ -31,9 +31,11 @@ export function useAuthForm(authFn, onSuccess) {
     } catch (err) {
       const msg = "Something went wrong";
 
-      err && setError(msg);
-      err && toast.dismiss();
-      err && toast.error(msg);
+      if (err) {
+        setError(msg);
+        toast.dismiss();
+        toast.error(msg);
+      }
     } finally {
       setLoading(false);
     }

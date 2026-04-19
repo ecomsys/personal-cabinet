@@ -1,6 +1,7 @@
-export const success = (res, data) => {
+export const success = (res, data, meta = null) => {
   return res.json({
     success: true,
-    data
+    data,
+    meta
   })
 }
