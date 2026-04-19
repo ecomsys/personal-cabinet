@@ -4,24 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server.js",
-    "prisma:admin": "node prisma/scripts/create-admin.js",
-    "prisma:reset": "node prisma/scripts/reset-all.js",    
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "prisma:admin": "node .npm/create-admin.js",
+    "prisma:reset": "node .npm/reset-all.js",
     "prisma:studio": "npx prisma studio",
-    "prisma:migrate": "npx prisma migrate dev --name init"    
+    "prisma:migrate": "npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "bcrypt": "^6.0.0",
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "^7.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "prisma": "^5.22.0"
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "nodemon": "^3.1.14",
+    "prisma": "^7.7.0"
   }
 }
