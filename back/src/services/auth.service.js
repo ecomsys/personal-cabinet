@@ -3,6 +3,10 @@
 import { prisma } from "../config/prisma.js";
 import jwt from "jsonwebtoken";
 
+import { logger } from "../utils/logger.js";
+import { enforceSessionLimit } from "../utils/sessionLimit.js";
+import { detectSuspiciousActivity } from "../utils/detectActivity.js";
+
 import { hashPassword, comparePassword } from "../utils/hash.js";
 
 import { generateRefreshToken, generateAccessToken } from "../utils/jwt.js";
@@ -29,6 +33,9 @@ export const register = async (email, password, meta) => {
     },
   });
 
+  await enforceSessionLimit(user.id);
+  await detectSuspiciousActivity(user.id, meta);
+
   const refreshToken = generateRefreshToken(user);
 
   const session = await prisma.session.create({
@@ -37,6 +44,7 @@ export const register = async (email, password, meta) => {
       refreshToken: hashToken(refreshToken),
       userAgent: meta?.userAgent,
       ip: meta?.ip,
+      deviceId: meta?.deviceId,
     },
   });
 
@@ -54,15 +62,13 @@ export const login = async (email, password, meta) => {
     throw new ApiError(404, "User not found", "AUTH_USER_NOT_FOUND");
   }
 
+  await enforceSessionLimit(user.id);
+  await detectSuspiciousActivity(user.id, meta);
+
   const isValid = await comparePassword(password, user.password);
   if (!isValid) {
     throw new ApiError(401, "Wrong password", "AUTH_INVALID_PASSWORD");
   }
-
-  // 1. сначала чистим старые сессии
-  await prisma.session.deleteMany({
-    where: { userId: user.id },
-  });
 
   const refreshToken = generateRefreshToken(user);
 
@@ -72,6 +78,7 @@ export const login = async (email, password, meta) => {
       refreshToken: hashToken(refreshToken),
       userAgent: meta?.userAgent,
       ip: meta?.ip,
+      deviceId: meta?.deviceId,
     },
   });
 
@@ -113,49 +120,72 @@ export const refresh = async (refreshToken, meta) => {
     where: {
       refreshToken: hashedToken,
       userId: user.id,
-      isValid: true,
     },
   });
 
-  // REUSE DETECTION (важный момент)
-  // если токен не найден → возможно украден или уже использован
   if (!currentSession) {
-    // optional: kill all sessions for safety
+    logger.warn({
+      type: "SECURITY",
+      event: "REFRESH_TOKEN_NOT_FOUND",
+      userId: decoded.id,
+      ip: meta?.ip,
+      userAgent: meta?.userAgent,
+    });
+
+    throw new ApiError(401, "Session expired", "AUTH_SESSION_EXPIRED");
+  }
+
+  // DEVICE CHECK
+  if (
+    currentSession.deviceId &&
+    meta?.deviceId &&
+    currentSession.deviceId !== meta.deviceId
+  ) {
     await prisma.session.updateMany({
       where: { userId: user.id },
       data: { isValid: false },
     });
 
-    throw new ApiError(
-      401,
-      "Session reused or expired",
-      "AUTH_SESSION_REUSED"
-    );
+    logger.warn({
+      type: "SECURITY",
+      event: "DEVICE_MISMATCH",
+      userId: user.id,
+      ip: meta.ip,
+      userAgent: meta.userAgent,
+    });
+
+    throw new ApiError(401, "Device mismatch", "AUTH_DEVICE_MISMATCH");
   }
+
+  await enforceSessionLimit(user.id);
 
   // 4. generate new tokens
   const newRefreshToken = generateRefreshToken(user);
 
-  const newAccessToken = generateAccessToken(user, currentSession.id);
-
   // 5. ATOMIC UPDATE (важно против race condition)
+  let newSession;
+
   await prisma.$transaction(async (tx) => {
-    // invalidate old session
     await tx.session.update({
       where: { id: currentSession.id },
-      data: { isValid: false },
+      data: {
+        isValid: false,
+        lastUsedAt: new Date(),
+      },
     });
 
-    // create new session
-    await tx.session.create({
+    newSession = await tx.session.create({
       data: {
         userId: user.id,
         refreshToken: hashToken(newRefreshToken),
         userAgent: meta?.userAgent,
         ip: meta?.ip,
+        deviceId: meta?.deviceId,
       },
     });
   });
+
+  const newAccessToken = generateAccessToken(user, newSession.id);
 
   return {
     accessToken: newAccessToken,
@@ -169,7 +199,10 @@ Logout service
 export const logout = async (refreshToken) => {
   if (refreshToken) {
     await prisma.session.updateMany({
-      where: { refreshToken: hashToken(refreshToken) },
+      where: {
+        refreshToken: hashToken(refreshToken),
+        isValid: true,
+      },
       data: { isValid: false },
     });
   }

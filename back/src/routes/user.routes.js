@@ -1,11 +1,33 @@
-// src/routes/user.routes.js
+import express from "express";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+import { sessionMiddleware } from "../middleware/session.middleware.js";
 
-import express from "express"
-import { me } from "../controllers/user.controller.js"
-import { authMiddleware } from "../middleware/auth.middleware.js"
+import {
+  me,
+  sessions,
+  deleteSessionController,
+  deleteOtherSessionsController,
+} from "../controllers/user.controller.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/me", authMiddleware, me)
+// lightweight route (можно без sessionMiddleware, но оставим пока стабильно)
+router.get("/me", authMiddleware, sessionMiddleware, me);
 
-export default router
+router.get("/sessions", authMiddleware, sessionMiddleware, sessions);
+
+router.delete(
+  "/sessions/:sessionId",
+  authMiddleware,
+  sessionMiddleware,
+  deleteSessionController
+);
+
+router.delete(
+  "/sessions",
+  authMiddleware,
+  sessionMiddleware,
+  deleteOtherSessionsController
+);
+
+export default router;

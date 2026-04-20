@@ -1,9 +1,17 @@
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 
 export const api = axios.create({
   baseURL: "http://localhost:5000/api",
   withCredentials: true,
 });
+
+let deviceId = localStorage.getItem("deviceId");
+
+if (!deviceId) {
+  deviceId = uuid();
+  localStorage.setItem("deviceId", deviceId);
+}
 
 /**
  * ACCESS TOKEN (in-memory)
@@ -24,6 +32,11 @@ api.interceptors.request.use((config) => {
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  const deviceId = localStorage.getItem("deviceId");
+  if (deviceId) {
+    config.headers["x-device-id"] = deviceId;
   }
 
   return config;

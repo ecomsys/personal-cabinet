@@ -13,13 +13,14 @@ export const registerController = async (req, res, next) => {
     const data = await register(email, password, {
       userAgent: req.headers["user-agent"],
       ip: req.ip,
+      deviceId: req.headers["x-device-id"],
     });
 
     res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth/register",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -42,13 +43,14 @@ export const loginController = async (req, res, next) => {
     const data = await login(email, password, {
       userAgent: req.headers["user-agent"],
       ip: req.ip,
+      deviceId: req.headers["x-device-id"],
     });
 
     res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth/login",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -69,13 +71,14 @@ export const refreshController = async (req, res, next) => {
     const data = await refresh(req.cookies.refreshToken, {
       userAgent: req.headers["user-agent"],
       ip: req.ip,
+      deviceId: req.headers["x-device-id"],
     });
 
     res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth/refresh",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -97,8 +100,8 @@ export const logoutController = async (req, res, next) => {
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/api/auth/refresh",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      path: "/",
     });
 
     return success(res, { message: "Logged out" });
