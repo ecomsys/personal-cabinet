@@ -94,7 +94,12 @@ export const logoutController = async (req, res, next) => {
   try {
     await logout(req.cookies.refreshToken);
 
-    res.clearCookie("refreshToken");
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/refresh",
+    });
 
     return success(res, { message: "Logged out" });
   } catch (e) {
