@@ -1,10 +1,9 @@
 // src/middleware/auth.middleware.js
 
 import jwt from "jsonwebtoken";
-import { prisma } from "../config/prisma.js";
 import { ApiError } from "../utils/api-error.js";
 
-export const authMiddleware = async (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   try {
     const header = req.headers.authorization;
 
@@ -19,35 +18,22 @@ export const authMiddleware = async (req, res, next) => {
     try {
       decoded = jwt.verify(token, process.env.ACCESS_SECRET);
     } catch {
-      return next(new ApiError(401, "Invalid token", "AUTH_INVALID_TOKEN"));
+      return next(new ApiError(401, "Access token expired", "AUTH_ACCESS_TOKEN_EXPIRED"));
     }
-
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-    });
-
-    if (!user) {
-      return next(new ApiError(401, "User not found", "AUTH_USER_NOT_FOUND"));
-    }
-
-    const session = await prisma.session.findUnique({
-      where: {
-        id: decoded.sid,
-      },
-    });
-
-    if (!session || !session.isValid) {
-      return next(new ApiError(401, "Session expired", "AUTH_SESSION_EXPIRED"));
-    }
-
+ 
+    
     req.user = {
-      id: user.id,
-      email: user.email,
-      role: user.role,
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
     };
+
+    req.sessionId = decoded.sid;
 
     next();
   } catch (e) {
-    return next(new ApiError(401, "Unauthorized", "AUTH_UNAUTHORIZED"));
+    return next(
+      new ApiError(401, "Unauthorized", "AUTH_UNAUTHORIZED")
+    );
   }
 };

@@ -6,6 +6,8 @@ export const errorMiddleware = (err, req, res, next) => {
   const status = err.status || 500;
 
   logger.error({
+    type: "ERROR",
+    requestId: req.requestId,
     message: err.message,
     code: err.code,
     status,
@@ -16,6 +18,7 @@ export const errorMiddleware = (err, req, res, next) => {
 
   return res.status(status).json({
     success: false,
+    requestId: req.requestId,
     error: {
       message: err.message || "Internal server error",
       code: err.code || "INTERNAL_ERROR",

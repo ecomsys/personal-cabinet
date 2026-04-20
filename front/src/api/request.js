@@ -8,32 +8,42 @@ export const request = async (config) => {
     const original = config;
     const status = err.response?.status;
     const backendError = err.response?.data?.error;
+    const code = backendError?.code;
 
-    // если не 401 → просто ошибка
+    // НЕ 401 — просто ошибка
     if (status !== 401) {
       throw {
         message: backendError?.message || "Request error",
-        code: backendError?.code || "UNKNOWN_ERROR",
+        code: code || "UNKNOWN_ERROR",
         status,
       };
     }
 
-    // пробуем refresh
-    try {
-      const token = await authClient.refresh();
+    // 401 → refresh ТОЛЬКО если access token истёк
+    if (code === "AUTH_ACCESS_TOKEN_EXPIRED") {
+      try {
+        const token = await authClient.refresh();
 
-      original.headers = {
-        ...original.headers,
-        Authorization: `Bearer ${token}`,
-      };
+        original.headers = {
+          ...original.headers,
+          Authorization: `Bearer ${token}`,
+        };
 
-      return await api(original);
-    } catch {
-      throw {
-        message: "Session expired",
-        code: "AUTH_SESSION_EXPIRED",
-        status: 401,
-      };
+        return await api(original);
+      } catch {
+        throw {
+          message: "Session expired",
+          code: "AUTH_SESSION_EXPIRED",
+          status: 401,
+        };
+      }
     }
+
+    // все остальные 401 — без refresh
+    throw {
+      message: backendError?.message || "Unauthorized",
+      code: code || "AUTH_UNAUTHORIZED",
+      status: 401,
+    };
   }
 };

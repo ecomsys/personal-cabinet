@@ -16,7 +16,6 @@ import {
 } from "../utils/limits.js";
 
 import { validate } from "../middleware/validate.middleware.js";
-import { csrfMiddleware } from "../middleware/csrf.middleware.js";
 import { registerSchema, loginSchema } from "../validators/auth.validator.js";
 
 const router = express.Router();
@@ -29,7 +28,7 @@ router.post(
 );
 router.post("/login", loginLimiter, validate(loginSchema), loginController);
 
-router.post("/refresh", csrfMiddleware, refreshLimiter, refreshController);
-router.post("/logout", csrfMiddleware, logoutController);
+router.post("/refresh", refreshLimiter, refreshController);
+router.post("/logout", logoutController);
 
 export default router;
