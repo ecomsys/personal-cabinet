@@ -1,16 +1,21 @@
 // src/services/auth.service.js
 
 import { prisma } from "../config/prisma.js";
-import { hashPassword, comparePassword } from "../utils/hash.js";
-import { generateTokens } from "../utils/jwt.js";
-import { ApiError } from "../utils/api-error.js";
-
 import jwt from "jsonwebtoken";
+
+import { hashPassword, comparePassword } from "../utils/hash.js";
+
+import { generateRefreshToken, generateAccessToken } from "../utils/jwt.js";
+
+import { ApiError } from "../utils/api-error.js";
+import { hashToken } from "../utils/crypto.js";
 
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
-// register service
+/*======================================================================================================
+Register service
+=======================================================================================================*/
 export const register = async (email, password, meta) => {
   const exist = await prisma.user.findUnique({ where: { email } });
   if (exist) throw new ApiError(409, "User already exists", "AUTH_USER_EXISTS");
@@ -24,25 +29,25 @@ export const register = async (email, password, meta) => {
     },
   });
 
-  const tokens = generateTokens({
-    id: user.id,
-    email: user.email,
-    role: user.role,
-  });
+  const refreshToken = generateRefreshToken(user);
 
-  await prisma.session.create({
+  const session = await prisma.session.create({
     data: {
       userId: user.id,
-      refreshToken: tokens.refreshToken,
+      refreshToken: hashToken(refreshToken),
       userAgent: meta?.userAgent,
       ip: meta?.ip,
     },
   });
 
-  return { user, tokens };
+  const accessToken = generateAccessToken(user, session.id);
+
+  return { user, accessToken, refreshToken };
 };
 
-// login service
+/*======================================================================================================
+Login service
+=======================================================================================================*/
 export const login = async (email, password, meta) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
@@ -54,98 +59,118 @@ export const login = async (email, password, meta) => {
     throw new ApiError(401, "Wrong password", "AUTH_INVALID_PASSWORD");
   }
 
-  const tokens = generateTokens({
-    id: user.id,
-    email: user.email,
-    role: user.role,
-  });
-
   // 1. сначала чистим старые сессии
   await prisma.session.deleteMany({
     where: { userId: user.id },
   });
 
-  await prisma.session.create({
+  const refreshToken = generateRefreshToken(user);
+
+  const session = await prisma.session.create({
     data: {
       userId: user.id,
-      refreshToken: tokens.refreshToken,
+      refreshToken: hashToken(refreshToken),
       userAgent: meta?.userAgent,
       ip: meta?.ip,
     },
   });
 
-  return { user, tokens };
+  const accessToken = generateAccessToken(user, session.id);
+
+  return { user, accessToken, refreshToken };
 };
 
-// refresh service
+/*======================================================================================================
+Refresh service (PRO VERSION)
+=======================================================================================================*/
 export const refresh = async (refreshToken, meta) => {
   if (!refreshToken) {
-    throw new ApiError(
-      401,
-      "Session expired",
-      "AUTH_SESSION_EXPIRED"
-    );
+    throw new ApiError(401, "Session expired", "AUTH_SESSION_EXPIRED");
   }
 
-  let userData;
+  // 1. verify refresh token
+  let decoded;
 
   try {
-    userData = jwt.verify(refreshToken, REFRESH_SECRET);
+    decoded = jwt.verify(refreshToken, REFRESH_SECRET);
   } catch {
-    throw new ApiError(
-      401,
-      "Session expired",
-      "AUTH_SESSION_EXPIRED"
-    );
+    throw new ApiError(401, "Session expired", "AUTH_SESSION_EXPIRED");
   }
 
-  const session = await prisma.session.findFirst({
+  // 2. get user
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.id },
+  });
+
+  if (!user) {
+    throw new ApiError(401, "User not found", "AUTH_USER_NOT_FOUND");
+  }
+
+  // 3. find session by HASHED refresh token
+  const hashedToken = hashToken(refreshToken);
+
+  const currentSession = await prisma.session.findFirst({
     where: {
-      refreshToken,
-      userId: userData.id,
+      refreshToken: hashedToken,
+      userId: user.id,
       isValid: true,
     },
   });
 
-  if (!session) {
+  // REUSE DETECTION (важный момент)
+  // если токен не найден → возможно украден или уже использован
+  if (!currentSession) {
+    // optional: kill all sessions for safety
+    await prisma.session.updateMany({
+      where: { userId: user.id },
+      data: { isValid: false },
+    });
+
     throw new ApiError(
       401,
-      "Session expired",
-      "AUTH_SESSION_EXPIRED"
+      "Session reused or expired",
+      "AUTH_SESSION_REUSED"
     );
   }
 
-  await prisma.session.delete({
-    where: { id: session.id },
-  });
+  // 4. generate new tokens
+  const newRefreshToken = generateRefreshToken(user);
 
-  const tokens = generateTokens({
-    id: userData.id,
-    email: userData.email,
-    role: userData.role,
-  });
+  const newAccessToken = generateAccessToken(user, currentSession.id);
 
-  await prisma.session.create({
-    data: {
-      userId: userData.id,
-      refreshToken: tokens.refreshToken,
-      userAgent: meta?.userAgent,
-      ip: meta?.ip,
-    },
+  // 5. ATOMIC UPDATE (важно против race condition)
+  await prisma.$transaction(async (tx) => {
+    // invalidate old session
+    await tx.session.update({
+      where: { id: currentSession.id },
+      data: { isValid: false },
+    });
+
+    // create new session
+    await tx.session.create({
+      data: {
+        userId: user.id,
+        refreshToken: hashToken(newRefreshToken),
+        userAgent: meta?.userAgent,
+        ip: meta?.ip,
+      },
+    });
   });
 
   return {
-    accessToken: tokens.accessToken,
-    refreshToken: tokens.refreshToken,
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
   };
 };
 
-
-// logout service
+/*======================================================================================================
+Logout service
+=======================================================================================================*/
 export const logout = async (refreshToken) => {
   if (refreshToken) {
-    await prisma.session.deleteMany({
-      where: { refreshToken },
+    await prisma.session.updateMany({
+      where: { refreshToken: hashToken(refreshToken) },
+      data: { isValid: false },
     });
   }
 

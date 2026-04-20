@@ -30,7 +30,11 @@ model Session {
   refreshToken String
   userAgent    String?
   ip           String?
+
+  deviceId     String?
+  lastUsedAt   DateTime @default(now())
   isValid      Boolean  @default(true)
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

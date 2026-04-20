@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "description": "Start personal cabinet template",
   "scripts": {
-    "install:all": "node install-all.js",    
-
+    "install:all": "node install-all.js",
     "start:client:dev": "cd front && npm run dev",
     "build:client": "cd front && npm run build",
     "preview:client": "cd front && npm run preview",
-
-    "start:server:dev": "cd back && npm run dev",   
-    "start:server": "cd back && npm run start",   
-
-    "dev": "concurrently \"npm run start:server:dev\" \"npm run start:client:dev\"",   
-    "pm2prod": "npm run build:client && pm2 start back/ecosystem.config.cjs --env production"    
+    "start:server:dev": "cd back && npm run dev",
+    "start:server": "cd back && npm run start",
+    "dev": "concurrently \"npm run start:server:dev\" \"npm run start:client:dev\"",
+    "pm2prod": "npm run build:client && pm2 start back/ecosystem.config.cjs --env production"
   },
   "repository": {
     "type": "git",
