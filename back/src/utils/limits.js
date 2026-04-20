@@ -1,3 +1,5 @@
+// src/utils/limits.js
+
 import rateLimit from "express-rate-limit"
 
 // глобальный лимит от брутфорса

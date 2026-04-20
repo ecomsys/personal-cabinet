@@ -1,3 +1,5 @@
+// src/controllers/auth.controller.js
+
 import { register, login, refresh, logout } from "../services/auth.service.js";
 import { success } from "../utils/response.js";
 

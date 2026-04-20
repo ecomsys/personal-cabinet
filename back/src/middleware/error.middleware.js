@@ -1,3 +1,5 @@
+// src/middleware/error.middleware.js
+
 import { logger } from "../utils/logger.js";
 
 export const errorMiddleware = (err, req, res, next) => {

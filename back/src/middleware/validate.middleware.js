@@ -1,3 +1,5 @@
+// src/middleware/validate.middleware.js
+
 import { ApiError } from "../utils/api-error.js"
 
 export const validate = (schema) => (req, res, next) => {

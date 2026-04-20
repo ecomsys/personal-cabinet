@@ -1,3 +1,5 @@
+// src/services/auth.service.js
+
 import { prisma } from "../config/prisma.js";
 import { hashPassword, comparePassword } from "../utils/hash.js";
 import { generateTokens } from "../utils/jwt.js";

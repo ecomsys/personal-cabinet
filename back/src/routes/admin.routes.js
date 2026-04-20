@@ -1,3 +1,5 @@
+// src/routes/admin.routes.js
+
 import express from "express"
 import { authMiddleware } from "../middleware/auth.middleware.js"
 import { roleMiddleware } from "../middleware/role.middleware.js"

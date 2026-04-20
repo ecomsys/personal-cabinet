@@ -1,3 +1,5 @@
+// src/controllers/user.controller.js
+
 import { success } from "../utils/response.js"
 import { getMe } from "../services/user.service.js"
 

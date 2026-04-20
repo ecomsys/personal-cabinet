@@ -1,3 +1,5 @@
+// src/services/user.service.js
+
 import { prisma } from "../config/prisma.js";
 import { ApiError } from "../utils/api-error.js";
 

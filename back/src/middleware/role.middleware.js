@@ -1,3 +1,5 @@
+// src/middleware/role.middleware.js
+
 import { ApiError } from "../utils/api-error.js";
 
 export const roleMiddleware = (roles = []) => {

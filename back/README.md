@@ -26,6 +26,8 @@ back /
 │    │    ├── auth.middleware.js     
 │    │    ├── error.middleware.js
 │    │    ├── role.middleware.js
+│    │    ├── validate.middleware.js
+│    │    ├── logger.middleware.js
 │    │    └── ... 
 │    │    
 │    ├── routes/                      # роуты 
@@ -38,11 +40,16 @@ back /
 │    │    ├── auth.service.js
 │    │    ├── user.service.js
 │    │    └── ... 
+│    │ 
+│    ├── validators/                   # валидация
+│    │    └── auth.validator.js
 │    │
 │    ├── utils/                        # вспомогательные утилиты
 │    │    ├── api-error.js
 │    │    ├── hash.js
 │    │    ├── jwt.js
+│    │    ├── limits.js
+│    │    ├── logger.js
 │    │    ├── response.js
 │    │    └── ... 
 │    │
