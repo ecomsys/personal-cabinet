@@ -3,59 +3,67 @@
 import { register, login, refresh, logout } from "../services/auth.service.js";
 import { success } from "../utils/response.js";
 
-// Registr
+/*======================================================================================================
+Register controller
+=======================================================================================================*/
 export const registerController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
     const data = await register(email, password, {
       userAgent: req.headers["user-agent"],
       ip: req.ip,
     });
 
-    res.cookie("refreshToken", data.tokens.refreshToken, {
+    res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
-      secure: false,
-      // secure: true,
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/register",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return success(res, {
       user: data.user,
-      accessToken: data.tokens.accessToken,
+      accessToken: data.accessToken,
     });
   } catch (e) {
     next(e);
   }
 };
 
-// Login
+/*======================================================================================================
+Login controller
+=======================================================================================================*/
 export const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
     const data = await login(email, password, {
       userAgent: req.headers["user-agent"],
       ip: req.ip,
     });
 
-    res.cookie("refreshToken", data.tokens.refreshToken, {
+    res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
-      secure: false,
-      // secure: true,
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/login",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return success(res, {
       user: data.user,
-      accessToken: data.tokens.accessToken,
+      accessToken: data.accessToken,
     });
   } catch (e) {
     next(e);
   }
 };
 
-// Refresh
+/*======================================================================================================
+Refresh controller
+=======================================================================================================*/
 export const refreshController = async (req, res, next) => {
   try {
     const data = await refresh(req.cookies.refreshToken, {
@@ -65,8 +73,9 @@ export const refreshController = async (req, res, next) => {
 
     res.cookie("refreshToken", data.refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api/auth/refresh",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -78,7 +87,9 @@ export const refreshController = async (req, res, next) => {
   }
 };
 
-// Logout
+/*======================================================================================================
+Logout controller
+=======================================================================================================*/
 export const logoutController = async (req, res, next) => {
   try {
     await logout(req.cookies.refreshToken);

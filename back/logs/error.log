@@ -1,22 +1,4 @@
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T19:46:14.023Z","url":"/api/auth/refresh"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T19:46:29.955Z","url":"/api/auth/login"}
-{"code":"AUTH_INVALID_PASSWORD","level":"error","message":"Wrong password","method":"POST","status":401,"time":"2026-04-19T19:46:42.056Z","url":"/api/auth/login"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T19:46:53.759Z","url":"/api/auth/login"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T19:47:03.210Z","url":"/api/auth/login"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T19:47:09.351Z","url":"/api/auth/register"}
-{"code":"AUTH_USER_EXISTS","level":"error","message":"User already exists","method":"POST","status":409,"time":"2026-04-19T19:47:14.021Z","url":"/api/auth/register"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T19:53:56.048Z","url":"/api/auth/refresh"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T19:54:29.545Z","url":"/api/auth/refresh"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T19:54:46.192Z","url":"/api/auth/refresh"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T19:59:58.052Z","url":"/api/auth/refresh"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T20:00:00.891Z","url":"/api/auth/refresh"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T20:00:04.875Z","url":"/api/auth/register"}
-{"code":"AUTH_INVALID_REFRESH_TOKEN","level":"error","message":"No refresh token","method":"POST","status":401,"time":"2026-04-19T20:00:46.048Z","url":"/api/auth/refresh"}
-{"code":"AUTH_USER_EXISTS","level":"error","message":"User already exists","method":"POST","status":409,"time":"2026-04-19T20:00:53.288Z","url":"/api/auth/register"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-19T20:14:06.535Z","url":"/api/auth/refresh"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-19T20:14:10.508Z","url":"/api/auth/login"}
-{"code":"AUTH_INVALID_PASSWORD","level":"error","message":"Wrong password","method":"POST","status":401,"time":"2026-04-19T20:14:18.460Z","url":"/api/auth/login"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-19T20:14:18.464Z","url":"/api/auth/refresh"}
-{"code":"AUTH_INVALID_PASSWORD","level":"error","message":"Wrong password","method":"POST","status":401,"time":"2026-04-19T20:14:53.482Z","url":"/api/auth/login"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-19T20:14:53.486Z","url":"/api/auth/refresh"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-19T20:17:17.042Z","url":"/api/auth/refresh"}
+{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T07:55:39.873Z","url":"/api/auth/refresh"}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-20T07:55:56.615Z","url":"/api/auth/login"}
+{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T08:18:21.018Z","url":"/api/auth/refresh"}
+{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T08:34:36.623Z","url":"/api/auth/refresh"}
