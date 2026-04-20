@@ -1,4 +1,0 @@
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T07:55:39.873Z","url":"/api/auth/refresh"}
-{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"POST","status":400,"time":"2026-04-20T07:55:56.615Z","url":"/api/auth/login"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T08:18:21.018Z","url":"/api/auth/refresh"}
-{"code":"AUTH_SESSION_EXPIRED","level":"error","message":"Session expired","method":"POST","status":401,"time":"2026-04-20T08:34:36.623Z","url":"/api/auth/refresh"}
