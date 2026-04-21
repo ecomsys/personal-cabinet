@@ -43,7 +43,7 @@ export default function Register() {
           disabled={loading}
         />
 
-        <Button loading={loading}>
+        <Button loading={loading} className="w-full">
           Create account
        </Button>
 

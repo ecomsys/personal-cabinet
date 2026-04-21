@@ -8,6 +8,7 @@ import { BaseUrlNoSlash } from "@/utils/resolvers"
 import { useAuthStore } from "../store/auth.store"
 
 import { Toaster } from "react-hot-toast";
+import { GlobalModals } from "../providers/globalModals"
 
 export function AppProviders() {
   const [visible, setVisible] = useState(false)
@@ -31,6 +32,7 @@ export function AppProviders() {
       <OrientationGuard>
         <div className={`relative app ${visible ? "app--visible" : ""}`}>
           <Toaster position="top-center" />
+          <GlobalModals />
           <AppRouter />
         </div>
       </OrientationGuard>

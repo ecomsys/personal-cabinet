@@ -7,15 +7,22 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "svg": "node .npm/svg.js"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
     "axios": "^1.15.0",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
+    "fs": "^0.0.1-security",
+    "lucide-react": "^1.8.0",
+    "path": "^0.12.7",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.14.1",
+    "url": "^0.11.4",
     "uuid": "^14.0.0",
     "zustand": "^5.0.12"
   },
@@ -29,6 +36,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "svg-sprite": "^2.0.4",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
   }

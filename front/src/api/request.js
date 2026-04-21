@@ -15,6 +15,7 @@ export const request = async (config) => {
       throw {
         message: backendError?.message || "Request error",
         code: code || "UNKNOWN_ERROR",
+        details: backendError?.details,
         status,
       };
     }
@@ -34,6 +35,7 @@ export const request = async (config) => {
         throw {
           message: "Session expired",
           code: "AUTH_SESSION_EXPIRED",
+          details: backendError?.details,
           status: 401,
         };
       }
@@ -43,6 +45,7 @@ export const request = async (config) => {
     throw {
       message: backendError?.message || "Unauthorized",
       code: code || "AUTH_UNAUTHORIZED",
+      details: backendError?.details,
       status: 401,
     };
   }

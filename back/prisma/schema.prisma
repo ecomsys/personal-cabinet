@@ -13,12 +13,16 @@ datasource db {
 }
 
 
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   role      String   @default("user")
+
+  name      String?
+  avatarUrl String?
+  status    String?
+
   createdAt DateTime @default(now())
 
   sessions Session[]

@@ -1,30 +1,23 @@
+import clsx from "clsx";
+
 export default function Input({
-  placeholder,
-  name,
-  error,
   className = "",
+  error,
   ...props
 }) {
   return (
-    <div className="relative w-full">
-      <input
-        placeholder={placeholder}
-        name={name}
-        className={`
-          border w-full p-2 rounded-lg border-gray-300 text-gray-700
-          focus:outline-none focus:ring-1 focus:ring-teal-400
-          transition
-          ${error ? "border-red-500 focus:ring-red-400" : ""}
-          ${className}
-        `}
-        {...props}
-      />
+    <input
+      className={clsx(
+        "w-full border rounded px-3 py-2 text-sm outline-none transition",
+        "focus:ring-2 focus:ring-black/20 focus:border-black",
+        
+        // error state
+        error && "border-red-500 focus:ring-red-200 focus:border-red-500",
 
-      {error && (
-        <p className="absolute left-0 top-full mt-1 text-red-500 text-xs">
-          {error}
-        </p>
+        "disabled:opacity-50 disabled:cursor-not-allowed",
+        className
       )}
-    </div>
+      {...props}
+    />
   );
 }

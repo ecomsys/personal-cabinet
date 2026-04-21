@@ -30,6 +30,8 @@ app.use(
   }),
 );
 
+app.use("/uploads", express.static("uploads"));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -48,7 +50,7 @@ cron.schedule("0 * * * *", async () => {
 
   isCleaning = true;
 
-  try {
+  try { 
     await cleanupSessions();
 
     logger.info({
