@@ -1,30 +1,32 @@
-import { useAuthStore } from "../store/auth.store"
+import { useAuthStore } from "@/store/auth.store";
+
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui";
+import { Button } from "@/components/ui";
 
 export default function Dashboard() {
-  const user = useAuthStore((s) => s.user)
-  const logout = useAuthStore((s) => s.logout)
+  const user = useAuthStore((s) => s.user);
+  // const logout = useAuthStore((s) => s.logout);
 
   return (
-    <div className="h-screen bg-gray-100 p-6">
-      <div className="bg-white p-6 rounded-xl shadow-md max-w-md">
-        <h1 className="text-xl mb-4">Dashboard</h1>
+    <div className="p-6 flex gap-5">
+      <Card className="w-full max-w-md">
+        
+        <CardHeader>
+          <h1 className="text-xl font-semibold">Info</h1>
+        </CardHeader>
 
-        {user ? (
-          <>
-            <p>Email: {user.email}</p>
-            <p>Role: {user.role}</p>
+        <CardContent className="space-y-2">
+          {user ? (
+            <>
+              <p><span className="text-gray-500">Email:</span> {user.email}</p>
+              <p><span className="text-gray-500">Role:</span> {user.role}</p>
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </CardContent>        
 
-            <button
-              onClick={logout}
-              className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
+      </Card>
     </div>
-  )
+  );
 }

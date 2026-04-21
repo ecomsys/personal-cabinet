@@ -1,26 +1,50 @@
+import clsx from "clsx";
+import { Spinner } from "@/components/ui";
+
 export default function Button({
   children,
-  loading = false,
   variant = "primary",
-  className = "",
+  size = "md",
+  loading = false,
+  disabled = false,
+  className = "", 
   ...props
 }) {
-  const base =
-    "w-full p-3 rounded-xl transition active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles =
+    "cursor-pointer inline-flex items-center justify-center font-medium rounded transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
-    primary: "bg-teal-800 text-white hover:opacity-90",
+    primary: "bg-black text-white hover:bg-gray-800",
     secondary: "bg-gray-200 text-black hover:bg-gray-300",
-    danger: "bg-red-500 text-white hover:bg-red-600",
+    danger: "bg-red-600 text-white hover:bg-red-700",
+    ghost: "bg-transparent text-black hover:bg-gray-100",
+  };
+
+  const sizes = {
+    sm: "text-sm px-3 py-1.5",
+    md: "text-sm px-4 py-2",
+    lg: "text-base px-5 py-3",
   };
 
   return (
     <button
-      disabled={loading || props.disabled}
-      className={`${base} ${variants[variant]} ${className}`}
+      className={clsx(
+        baseStyles,
+        variants[variant],
+        sizes[size],
+        className
+      )}
+      disabled={disabled || loading}
       {...props}
     >
-      {loading ? "Loading..." : children}
+      {loading ? (
+        <span className="flex items-center gap-2">
+          <Spinner size="sm" className="text-white" />
+          Loading...
+        </span>
+      ) : (
+        children
+      )}
     </button>
   );
 }

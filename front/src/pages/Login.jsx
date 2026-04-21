@@ -42,7 +42,7 @@ export default function Login() {
           disabled={loading}
         />
 
-        <Button loading={loading}>Login</Button>      
+        <Button loading={loading} className="w-full">Login</Button>      
 
         <p className="text-sm text-center text-gray-600">
           No account?{" "}

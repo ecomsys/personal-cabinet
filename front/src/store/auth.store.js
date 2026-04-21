@@ -8,6 +8,8 @@ export const useAuthStore = create((set) => ({
   loading: true,
   logined: false,
 
+  setUser: (user) => set({ user }),
+
   login: async (email, password) => {
     try {
       const res = await request({
@@ -131,3 +133,6 @@ export const useAuthStore = create((set) => ({
     }
   },
 }));
+
+
+
