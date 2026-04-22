@@ -1,24 +1,36 @@
 import { request } from "./request";
 
 /* =========================
-   GET PROFILE
+   ADMIN - GET USERS
 ========================= */
-export const getProfile = async () => {
+export const getUsersAdmin = async () => {
   const res = await request({
     method: "GET",
-    url: "/user/me",
+    url: "/admin/users",
   });
 
   return res.data.data;
 };
 
 /* =========================
-   UPDATE PROFILE (name/status/avatar)
+   ADMIN - GET USER BY ID
 ========================= */
-export const updateProfile = async (data) => {
+export const getUserByIdAdmin = async (id) => {
+  const res = await request({
+    method: "GET",
+    url: `/admin/users/${id}`,
+  });
+
+  return res.data.data;
+};
+
+/* =========================
+   ADMIN - UPDATE USER
+========================= */
+export const updateUserAdmin = async (id, data) => {
   const res = await request({
     method: "PATCH",
-    url: "/user/profile",
+    url: `/admin/users/${id}`,
     data,
   });
 
@@ -26,82 +38,63 @@ export const updateProfile = async (data) => {
 };
 
 /* =========================
-   UPDATE PASSWORD
+   ADMIN - DELETE USER
 ========================= */
-export const updatePassword = async (data) => {
+export const deleteUserAdmin = async (id) => {
   const res = await request({
-    method: "PATCH",
-    url: "/user/password",
-    data,
+    method: "DELETE",
+    url: `/admin/users/${id}`,
   });
 
   return res.data.data;
 };
 
 /* =========================
-   UPDATE EMAIL
+   ADMIN - GET SESSIONS
 ========================= */
-export const updateEmail = async (data) => {
+export const getAllSessionsAdmin = async ({ page = 1, limit = 10 } = {}) => {
   const res = await request({
-    method: "PATCH",
-    url: "/user/email",
-    data,
-  });
-
-  return res.data.data;
-};
-
-
-/* =========================
-   UPLOAD AVATAR
-========================= */
-export const uploadAvatar = async (file) => {
-  const formData = new FormData();
-  formData.append("avatar", file);
-
-  const res = await request({
-    method: "PATCH",
-    url: "/user/avatar",
-    data: formData,
-    headers: {
-      "Content-Type": "multipart/form-data",
+    method: "GET",
+    url: "/admin/sessions",
+    params: {
+      page,
+      limit,
     },
   });
 
   return res.data.data;
 };
+/* =========================
+   ADMIN - DELETE SESSION
+========================= */
+export const deleteSessionAdmin = async (id) => {
+  const res = await request({
+    method: "DELETE",
+    url: `/admin/sessions/${id}`,
+  });
+
+  return res.data.data;
+};
 
 /* =========================
-   GET SESSIONS
+   ADMIN - DELETE ALL SESSIONS
 ========================= */
-export const getSessions = async () => {
+export const deleteAllSessionsAdmin = async () => {
+  const res = await request({
+    method: "DELETE",
+    url: "/admin/sessions",
+  });
+
+  return res.data.data;
+};
+
+/* =========================
+   ADMIN - STATS
+========================= */
+export const getStatsAdmin = async () => {
   const res = await request({
     method: "GET",
-    url: "/user/sessions",
-  });
-
-  return res.data.data;
-};
-
-/* =========================
-   DELETE SESSION
-========================= */
-export const deleteSession = async (sessionId) => {
-  const res = await request({
-    method: "DELETE",
-    url: `/user/sessions/${sessionId}`,
-  });
-
-  return res.data.data;
-};
-
-/* =========================
-   DELETE OTHER SESSIONS
-========================= */
-export const deleteOtherSessions = async () => {
-  const res = await request({
-    method: "DELETE",
-    url: "/user/sessions",
+    url: "/admin/stats",
   });
 
   return res.data.data;

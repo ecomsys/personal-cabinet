@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  getSessions,
-  deleteSession,
-  deleteOtherSessions,
-} from "@/api/profile.api";
+  getSessionsUser,
+  deleteSessionUser,
+  deleteOtherSessionsUser,
+} from "@/api/user.api";
 
 import { useModalStore } from "@/store/modal.store.js";
+import { Card, Button } from "@/components/ui";
 import toast from "react-hot-toast";
 
 export default function Sessions() {
@@ -14,7 +15,7 @@ export default function Sessions() {
   const openConfirm = useModalStore((s) => s.openConfirm);
 
   const load = () => {
-    getSessions().then(setSessions);
+    getSessionsUser().then(setSessions);
   };
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function Sessions() {
       confirmText: "Remove",
       onConfirm: async () => {
         try {
-          await deleteSession(id);
+          await deleteSessionUser(id);
           toast.success("Session removed");
           load();
         } catch {
@@ -45,7 +46,7 @@ export default function Sessions() {
       confirmText: "Logout others",
       onConfirm: async () => {
         try {
-          await deleteOtherSessions();
+          await deleteOtherSessionsUser();
           toast.success("Other sessions removed");
           load();
         } catch {
@@ -56,45 +57,66 @@ export default function Sessions() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow space-y-4">
+    <div className="w-full">
 
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Sessions</h1>
+      <Card>
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-lg font-semibold">Sessions</h1>
 
-        <button
-          onClick={removeOthers}
-          className="text-sm bg-red-500 text-white px-3 py-1 rounded"
-        >
-          Logout others
-        </button>
-      </div>
-
-      {sessions.map((s) => (
-        <div
-          key={s.id}
-          className="border p-3 rounded flex justify-between items-center"
-        >
-          <div>
-            <p className="text-sm">{s.ip}</p>
-            <p className="text-xs text-gray-500">{s.userAgent}</p>
-
-            {s.isCurrent && (
-              <span className="text-green-600 text-xs">
-                current session
-              </span>
-            )}
-          </div>
-
-          {!s.isCurrent && (
-            <button
-              onClick={() => removeSession(s.id)}
-              className="text-red-500 text-sm"
-            >
-              remove
-            </button>
-          )}
+          <Button variant="danger" size="sm" onClick={removeOthers}>
+            Logout others
+          </Button>
         </div>
-      ))}
+
+        {/* LIST */}
+        <div className="divide-y">
+
+          {sessions.length === 0 && (
+            <p className="text-sm text-gray-500 py-4">
+              No active sessions
+            </p>
+          )}
+
+          {sessions.map((s) => (
+            <div
+              key={s.id}
+              className="flex justify-between items-start py-3 gap-4"
+            >
+              {/* INFO */}
+              <div className="flex flex-col gap-1 min-w-0">
+
+                <span className="text-sm font-medium">
+                  {s.ip}
+                </span>
+
+                <span className="text-xs text-gray-500 break-all">
+                  {s.userAgent}
+                </span>
+
+                {s.isCurrent && (
+                  <span className="text-xs text-green-600 font-medium">
+                    Current session
+                  </span>
+                )}
+
+              </div>
+
+              {/* ACTION */}
+              {!s.isCurrent && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeSession(s.id)}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
+          ))}
+
+        </div>
+      </Card>
 
     </div>
   );

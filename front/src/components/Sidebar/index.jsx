@@ -27,7 +27,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
   ];
 
   const linkClass = (active) =>
-    `flex items-center gap-3 px-3 py-2 rounded-lg text-md font-medium tracking-[0.03em] transition ${
+    `flex items-center gap-3 px-3 py-2 rounded-lg text-md font-medium leading-[1] tracking-[0.03em] transition ${
       active ? "bg-white text-black" : "text-gray-300 hover:bg-teal-800"
     }`;
 
@@ -62,7 +62,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
           </button>
         </div>
 
-        <nav className="flex flex-col gap-1 flex-1">
+        <nav className="flex flex-col gap-2 flex-1">
           {items.map((item) => (
             <Link
               key={item.path}
@@ -71,7 +71,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
               className={linkClass(isActive(item.path))}
             >
               <Icon name={item.icon} className="w-4 h-4" />
-              {item.label}
+              <span>{item.label}</span>
             </Link>
           ))}
 

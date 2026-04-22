@@ -9,32 +9,26 @@ export const cleanupSessions = async () => {
       Date.now() - SESSION_TTL_DAYS * 24 * 60 * 60 * 1000
     );
 
-    // сначала мягкая деактивация
-    const deactivated = await prisma.session.updateMany({
+    // =========================
+    // 1. CLEANUP (soft condition is optional)
+    // =========================
+    // Удаляем всё, что:
+    // - либо невалидное
+    // - либо старше TTL
+    const deleted = await prisma.session.deleteMany({
       where: {
         OR: [
           { isValid: false },
           { lastUsedAt: { lt: expiredDate } },
         ],
       },
-      data: {
-        isValid: false,
-      },
-    });
-
-    // потом физическое удаление старого мусора
-    const deleted = await prisma.session.deleteMany({
-      where: {
-        isValid: false,
-        lastUsedAt: { lt: expiredDate },
-      },
     });
 
     logger.info({
       type: "CRON",
       event: "SESSION_CLEANUP",
-      deactivated: deactivated.count,
       deleted: deleted.count,
+      expiredDate,
     });
   } catch (e) {
     logger.error({

@@ -10,7 +10,7 @@ export const NAV_ITEMS = [
     icon: "user",
   },
   {
-    label: "Sessions",
+    label: "My sessions",
     path: "/sessions",
     icon: "sessions",
   },

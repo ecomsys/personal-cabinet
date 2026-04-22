@@ -6,11 +6,9 @@ import jwt from "jsonwebtoken";
 import { logger } from "../utils/logger.js";
 import { enforceSessionLimit } from "../utils/sessionLimit.js";
 import { detectSuspiciousActivity } from "../utils/detectActivity.js";
-
 import { hashPassword, comparePassword } from "../utils/hash.js";
-
 import { generateRefreshToken, generateAccessToken } from "../utils/jwt.js";
-
+import { validateDevice } from "../utils/helpers.js";
 import { ApiError } from "../utils/api-error.js";
 import { hashToken } from "../utils/crypto.js";
 
@@ -62,13 +60,14 @@ export const login = async (email, password, meta) => {
     throw new ApiError(404, "User not found", "AUTH_USER_NOT_FOUND");
   }
 
-  await enforceSessionLimit(user.id);
   await detectSuspiciousActivity(user.id, meta);
 
   const isValid = await comparePassword(password, user.password);
   if (!isValid) {
     throw new ApiError(401, "Wrong password", "AUTH_INVALID_PASSWORD");
   }
+
+  await enforceSessionLimit(user.id);
 
   const refreshToken = generateRefreshToken(user);
 
@@ -113,6 +112,8 @@ export const refresh = async (refreshToken, meta) => {
     throw new ApiError(401, "User not found", "AUTH_USER_NOT_FOUND");
   }
 
+  await detectSuspiciousActivity(user.id, meta);
+
   // 3. find session by HASHED refresh token
   const hashedToken = hashToken(refreshToken);
 
@@ -120,6 +121,7 @@ export const refresh = async (refreshToken, meta) => {
     where: {
       refreshToken: hashedToken,
       userId: user.id,
+      isValid: true,
     },
   });
 
@@ -136,11 +138,7 @@ export const refresh = async (refreshToken, meta) => {
   }
 
   // DEVICE CHECK
-  if (
-    currentSession.deviceId &&
-    meta?.deviceId &&
-    currentSession.deviceId !== meta.deviceId
-  ) {
+  if (!validateDevice(currentSession, meta)) {
     await prisma.session.updateMany({
       where: { userId: user.id },
       data: { isValid: false },

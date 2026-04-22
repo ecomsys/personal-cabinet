@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth.store";
-import { updateProfile, uploadAvatar } from "@/api/profile.api";
+import { updateProfileUser, uploadAvatarUser } from "@/api/user.api";
 import { AvatarUploader } from "@/components/AvatarUploader";
 
-import { Input, Button, Textarea, FormField } from "@/components/ui";
+import { Input, Button, Textarea, FormField, Card } from "@/components/ui";
 import toast from "react-hot-toast";
 
 export default function Profile() {
@@ -12,16 +12,13 @@ export default function Profile() {
 
   const [name, setName] = useState("");
   const [status, setStatus] = useState("");
-
   const [error] = useState(false);
 
-  // draft avatar
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  // sync user → form
   useEffect(() => {
     if (!user) return;
 
@@ -31,7 +28,6 @@ export default function Profile() {
     setAvatarFile(null);
   }, [user]);
 
-  // cleanup blob
   useEffect(() => {
     return () => {
       if (avatarPreview?.startsWith("blob:")) {
@@ -40,7 +36,6 @@ export default function Profile() {
     };
   }, [avatarPreview]);
 
-  // select avatar (draft only)
   const handleAvatarSelect = (file) => {
     if (!file) return;
 
@@ -54,23 +49,20 @@ export default function Profile() {
 
       let avatarUrl = user?.avatarUrl;
 
-      // 1. upload avatar ONLY if changed
       if (avatarFile) {
-        const avatarRes = await uploadAvatar(avatarFile);
+        const avatarRes = await uploadAvatarUser(avatarFile);
         avatarUrl = avatarRes.avatarUrl;
       }
 
-      // 2. update profile
-      const profileRes = await updateProfile({
+      const profileRes = await updateProfileUser({
         name,
         status,
       });
 
-      // 3. SAFE merge (нормализация)
       const updatedUser = {
         ...user,
         ...profileRes,
-        avatarUrl, // <- всегда один источник истины
+        avatarUrl,
       };
 
       setUser(updatedUser);
@@ -84,42 +76,59 @@ export default function Profile() {
       setLoading(false);
     }
   };
+
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-xl shadow space-y-6">
-      <h1 className="text-xl font-semibold text-center">Profile</h1>
+    <div className="max-w-lg mx-auto">
 
-      {/* AVATAR CENTERED */}
-      <div className="flex flex-col items-center space-y-4">
-        <AvatarUploader
-          avatarUrl={avatarPreview}
-          loading={loading}
-          onUpload={handleAvatarSelect}
-        />
+      <Card className="space-y-6">
 
-        <p className="text-sm text-gray-500">Click avatar to change</p>
-      </div>
+        <h1 className="text-xl font-semibold text-center">
+          Profile
+        </h1>
 
-      {/* FORM */}
-      <div className="space-y-4">
-        <FormField label="Name" error={error}>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </FormField>
-
-        <FormField label="Status" error={error}>
-          <Textarea
-            value={status}
-            rows={3}
-            onChange={(e) => setStatus(e.target.value)}
+        {/* AVATAR */}
+        <div className="flex flex-col items-center space-y-4">
+          <AvatarUploader
+            avatarUrl={avatarPreview}
+            loading={loading}
+            onUpload={handleAvatarSelect}
           />
-        </FormField>
-      </div>
 
-      {/* SAVE */}
-      <div className="flex justify-center">
-        <Button onClick={saveProfile} disabled={loading} variant="primary" className="w-full">
+          <p className="text-sm text-gray-500">
+            Click avatar to change
+          </p>
+        </div>
+
+        {/* FORM */}
+        <div className="space-y-4">
+          <FormField label="Name" error={error}>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </FormField>
+
+          <FormField label="Status" error={error}>
+            <Textarea
+              value={status}
+              rows={3}
+              onChange={(e) => setStatus(e.target.value)}
+            />
+          </FormField>
+        </div>
+
+        {/* SAVE */}
+        <Button
+          onClick={saveProfile}
+          disabled={loading}
+          variant="primary"
+          className="w-full"
+        >
           {loading ? "Saving..." : "Save changes"}
         </Button>
-      </div>
+
+      </Card>
+
     </div>
   );
 }

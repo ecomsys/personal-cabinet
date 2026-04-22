@@ -7,7 +7,7 @@ export function Breadcrumbs({ className }) {
 
   return (
     <div className={`text-sm text-gray-500 flex gap-2 ${className}`}>
-      <Link to="/">Home</Link>
+      <Link className="hover:text-black" to="/">Home</Link>
 
       {paths.map((p, i) => (
         <span key={i} className="flex gap-2">

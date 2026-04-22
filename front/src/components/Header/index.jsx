@@ -24,7 +24,7 @@ export default function Header({ onBurger }) {
     <header className="bg-white">
       {/* LEFT */}
 
-      <div className="h-16 border-b border-gray-100 flex items-center justify-between px-6">
+      <div className="h-16 border-b border-gray-200 flex items-center justify-between px-6">
         <UserBlock user={user} />
 
         {/* RIGHT */}

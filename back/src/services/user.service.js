@@ -3,6 +3,7 @@
 import { prisma } from "../config/prisma.js";
 import { ApiError } from "../utils/api-error.js";
 import { comparePassword, hashPassword } from "../utils/hash.js";
+import { getBaseUrl } from "../utils/helpers.js";
 
 /*================================================================================
 Получить юзера
@@ -154,7 +155,7 @@ export const changeEmail = async (userId, newEmail, password, sessionId) => {
 /*================================================================================
 Смена аватара
 ================================================================================*/
-export const updateAvatar = async (userId, filename) => {
+export const updateAvatar = async (userId, filename, req) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -163,8 +164,8 @@ export const updateAvatar = async (userId, filename) => {
     throw new ApiError(404, "User not found", "AUTH_USER_NOT_FOUND");
   }
 
-  // const avatarUrl = `/uploads/avatars/${filename}`;
-  const avatarUrl = `${process.env.BACK_URL}/uploads/avatars/${filename}`;
+  const baseUrl = getBaseUrl(req);
+  const avatarUrl = `${baseUrl}/uploads/avatars/${filename}`;
 
   const updatedUser = await prisma.user.update({
     where: { id: userId },

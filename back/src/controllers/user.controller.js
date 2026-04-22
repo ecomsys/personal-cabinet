@@ -83,7 +83,7 @@ export const updateAvatarController = async (req, res, next) => {
       throw new ApiError(400, "No file uploaded", "NO_FILE");
     }
 
-    const user = await updateAvatar(req.user.id, req.file.filename);
+    const user = await updateAvatar(req.user.id, req.file.filename, req);
 
     return success(res, user);
   } catch (e) {

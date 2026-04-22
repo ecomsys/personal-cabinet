@@ -1,0 +1,110 @@
+import { prisma } from "../../config/prisma.js";
+import { ApiError } from "../../utils/api-error.js";
+
+/* =========================
+   GET ALL SESSIONS (ADMIN)
+========================= */
+export const getAllSessions = async ({ page = 1, limit = 10 }) => {
+  const skip = (page - 1) * limit;
+
+  const where = {
+    isValid: true, 
+  };
+
+  const [sessions, total] = await Promise.all([
+    prisma.session.findMany({
+      skip,
+      take: limit,
+      orderBy: { lastUsedAt: "desc" },
+      where,
+      include: { user: true },
+    }),
+
+    prisma.session.count({ where }),
+  ]);
+
+  return {
+    data: sessions.map((s) => ({
+      id: s.id,
+      user: {
+        id: s.user.id,
+        email: s.user.email,
+        role: s.user.role,
+      },
+      ip: s.ip,
+      deviceId: s.deviceId,
+      lastUsedAt: s.lastUsedAt,
+      createdAt: s.createdAt,
+      isValid: s.isValid,
+    })),
+
+    meta: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+    },
+  };
+};
+
+/* =========================
+   GET SESSION BY ID
+========================= */
+export const getSessionById = async (id) => {
+  const session = await prisma.session.findUnique({
+    where: { id },
+    include: { user: true },
+  });
+
+  if (!session) {
+    throw new ApiError(404, "Session not found", "SESSION_NOT_FOUND");
+  }
+
+  const { password, ...user } = session.user;
+
+  return {
+    id: session.id,
+    user,
+    ip: session.ip,
+    userAgent: session.userAgent,
+    deviceId: session.deviceId,
+    isValid: session.isValid,
+    lastUsedAt: session.lastUsedAt,
+    createdAt: session.createdAt,
+  };
+};
+
+/* =========================
+   DELETE SESSION (ADMIN)
+========================= */
+export const deleteSession = async (id) => {
+  const session = await prisma.session.findUnique({
+    where: { id },
+  });
+
+  if (!session) {
+    throw new ApiError(404, "Session not found", "SESSION_NOT_FOUND");
+  }
+
+  await prisma.session.update({
+    where: { id },
+    data: {
+      isValid: false,
+    },
+  });
+
+  return true;
+};
+
+/* =========================
+   DELETE ALL SESSIONS (ADMIN)
+========================= */
+export const deleteAllSessions = async () => {
+  await prisma.session.updateMany({
+    data: {
+      isValid: false,
+    },
+  });
+
+  return true;
+};
