@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { updatePassword, updateEmail } from "@/api/profile.api";
-import { Modal, Button, Input, FormField } from "@/components/ui";
+import { updatePasswordUser, updateEmailUser } from "@/api/user.api";
+import { Modal, Button, Input, FormField, PanelCard } from "@/components/ui";
 
 export default function Settings() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -9,7 +9,6 @@ export default function Settings() {
   const [newEmail, setNewEmail] = useState("");
   const [emailPassword, setEmailPassword] = useState("");
 
-  // modal state
   const [modal, setModal] = useState({
     open: false,
     title: "",
@@ -17,19 +16,12 @@ export default function Settings() {
   });
 
   const showModal = (title, message) => {
-    setModal({
-      open: true,
-      title,
-      message,
-    });
+    setModal({ open: true, title, message });
   };
 
   const handlePassword = async () => {
     try {
-      await updatePassword({
-        currentPassword,
-        newPassword,
-      });
+      await updatePasswordUser({ currentPassword, newPassword });
 
       setCurrentPassword("");
       setNewPassword("");
@@ -42,10 +34,7 @@ export default function Settings() {
 
   const handleEmail = async () => {
     try {
-      await updateEmail({
-        newEmail,
-        password: emailPassword,
-      });
+      await updateEmailUser({ newEmail, password: emailPassword });
 
       setNewEmail("");
       setEmailPassword("");
@@ -57,11 +46,10 @@ export default function Settings() {
   };
 
   return (
-    <div className="space-y-10">
-      {/* PASSWORD */}
-      <div className="bg-white p-6 rounded-xl shadow space-y-3">
-        <h2 className="font-semibold">Change Password</h2>
+    <div className="max-w-full grid sm:grid-cols-2 gap-6">
 
+      {/* PASSWORD */}
+      <PanelCard title="Change Password">
         <FormField label="Current password">
           <Input
             type="password"
@@ -78,13 +66,15 @@ export default function Settings() {
           />
         </FormField>
 
-        <Button onClick={handlePassword}>Update password</Button>
-      </div>
+        <div className="flex justify-end">
+          <Button onClick={handlePassword}>
+            Update password
+          </Button>
+        </div>
+      </PanelCard>
 
       {/* EMAIL */}
-      <div className="bg-white p-6 rounded-xl shadow space-y-3">
-        <h2 className="font-semibold">Change Email</h2>
-
+      <PanelCard title="Change Email">
         <FormField label="New email">
           <Input
             value={newEmail}
@@ -100,21 +90,27 @@ export default function Settings() {
           />
         </FormField>
 
-        <Button onClick={handleEmail}>Update email</Button>
-      </div>
+        <div className="flex justify-end">
+          <Button onClick={handleEmail}>
+            Update email
+          </Button>
+        </div>
+      </PanelCard>
 
       {/* MODAL */}
       <Modal
         open={modal.open}
-        onOpenChange={(open) => setModal((prev) => ({ ...prev, open }))}
+        onOpenChange={(open) =>
+          setModal((prev) => ({ ...prev, open }))
+        }
         title={modal.title}
-        description="Operation completed successfully"
+        description={modal.message}
       >
-        <p className="text-sm text-gray-600">{modal.message}</p>
-
-        <div className="mt-4 flex justify-end">
+        <div className="flex justify-end mt-4">
           <Button
-            onClick={() => setModal((prev) => ({ ...prev, open: false }))}
+            onClick={() =>
+              setModal((prev) => ({ ...prev, open: false }))
+            }
           >
             OK
           </Button>

@@ -11,7 +11,7 @@ export default function Button({
   ...props
 }) {
   const baseStyles =
-    "cursor-pointer inline-flex items-center justify-center font-medium rounded transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed";
+    "cursor-pointer inline-flex items-center justify-center font-medium rounded-md transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
     primary: "bg-black text-white hover:bg-gray-800",
@@ -21,9 +21,10 @@ export default function Button({
   };
 
   const sizes = {
-    sm: "text-sm px-3 py-1.5",
-    md: "text-sm px-4 py-2",
-    lg: "text-base px-5 py-3",
+    icon: "text-sm px-2 py-2",
+    sm: "text-sm px-3 py-2",
+    md: "text-sm px-4 py-2.5",
+    lg: "text-base px-5 py-3.5",
   };
 
   return (

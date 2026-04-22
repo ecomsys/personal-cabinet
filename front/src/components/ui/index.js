@@ -8,9 +8,22 @@ export { default as Spinner } from "./Spinner";
 export { default as Modal } from "./Modal/Modal";
 export { default as ConfirmModal } from "./Modal/ConfirmModal";
 
-export { default as UserInfoBlock } from "./UserInfoBlock";
-
 export { default as FormField } from "./FormField";
+export { default as RoleBadge } from "./RoleBadge";
+export { default as InlineMetrics } from "./InlineMetrics";
+export { default as Tabs } from "./Tabs";
 
-export { Card, CardContent, CardHeader, CardFooter } from "./Card";
+export { default as Pagination } from "./Pagination";
+export { default as MobileList } from "./MobileList";
+
+export { PanelCard, Card, CardContent, CardHeader, CardFooter } from "./Card";
+
+export {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHeaderCell,
+} from "./Table";
 

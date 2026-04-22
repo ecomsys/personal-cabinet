@@ -19,6 +19,11 @@ back /
 │    │    └── ... 
 │    │
 │    ├── controllers/                # контроллеры
+│    │    ├── admin/
+│    │    │     ├── users.controller.js
+│    │    │     ├── sessions.controller.js
+│    │    │     └── stats.controller.js
+│    │    │
 │    │    ├── auth.controller.js     
 │    │    ├── user.controller.js     
 │    │    └── ... 
@@ -43,7 +48,12 @@ back /
 │    │    ├── user.routes.js
 │    │    └── ... 
 │    │  
-│    ├── services/                     # сервисы
+│    ├── services/                    # сервисы
+│    │    ├── admin/
+│    │    │     ├── users.service.js
+│    │    │     ├── sessions.service.js
+│    │    │     └── stats.service.js
+│    │    │
 │    │    ├── auth.service.js
 │    │    ├── user.service.js
 │    │    └── ... 

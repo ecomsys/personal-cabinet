@@ -13,3 +13,17 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: black !important;
     transition: background-color 9999s ease-in-out 0s;
 }
+
+/********************************************
+Скрыть скролл
+*******************************************/
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-hide, .scroll-hide  *{
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

@@ -1,9 +1,8 @@
-// src/middleware/auth.middleware.js
-
 import jwt from "jsonwebtoken";
+import { prisma } from "../config/prisma.js";
 import { ApiError } from "../utils/api-error.js";
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   try {
     const header = req.headers.authorization;
 
@@ -18,10 +17,22 @@ export const authMiddleware = (req, res, next) => {
     try {
       decoded = jwt.verify(token, process.env.ACCESS_SECRET);
     } catch {
-      return next(new ApiError(401, "Access token expired", "AUTH_ACCESS_TOKEN_EXPIRED"));
+      return next(
+        new ApiError(401, "Access token expired", "AUTH_ACCESS_TOKEN_EXPIRED")
+      );
     }
- 
-    
+
+    // ВАЖНО: проверяем сессию
+    const session = await prisma.session.findUnique({
+      where: { id: decoded.sid },
+    });
+
+    if (!session || !session.isValid) {
+      return next(
+        new ApiError(401, "Session revoked", "AUTH_SESSION_REVOKED")
+      );
+    }
+
     req.user = {
       id: decoded.id,
       email: decoded.email,
@@ -32,8 +43,6 @@ export const authMiddleware = (req, res, next) => {
 
     next();
   } catch (e) {
-    return next(
-      new ApiError(401, "Unauthorized", "AUTH_UNAUTHORIZED")
-    );
+    return next(new ApiError(401, "Unauthorized", "AUTH_UNAUTHORIZED"));
   }
 };

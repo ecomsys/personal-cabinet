@@ -5,15 +5,21 @@ import { ApiError } from "../utils/api-error.js";
 
 const SHOULD_UPDATE_INTERVAL = 60 * 1000; // 1 минута
 
+let cachedSession = null;
+
 export const sessionMiddleware = async (req, res, next) => {
   try {
     if (!req.sessionId || !req.user?.id) {
       return next(new ApiError(401, "Unauthorized", "AUTH_UNAUTHORIZED"));
     }
 
-    const session = await prisma.session.findUnique({
-      where: { id: req.sessionId },
-    });
+    if (!cachedSession) {
+      cachedSession = await prisma.session.findUnique({
+        where: { id: req.sessionId },
+      });
+    }
+
+    const session = cachedSession;
 
     if (!session || !session.isValid) {
       return next(new ApiError(401, "Session expired", "AUTH_SESSION_EXPIRED"));
