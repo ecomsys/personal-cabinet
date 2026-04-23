@@ -138,7 +138,7 @@ export const UsersTable = () => {
           <Table className="table-fixed w-full">
             <TableHead>
               <tr>
-                <TableHeaderCell className="w-[30px]">#</TableHeaderCell>
+                <TableHeaderCell className="w-[1.875rem]">#</TableHeaderCell>
                 <TableHeaderCell>Email</TableHeaderCell>
                 <TableHeaderCell>Role</TableHeaderCell>
                 <TableHeaderCell>Created</TableHeaderCell>

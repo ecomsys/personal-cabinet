@@ -139,7 +139,7 @@ export const SessionsTable = () => {
           <Table className="w-full">
             <TableHead>
               <tr>
-                <TableHeaderCell className="w-[40px]">#</TableHeaderCell>
+                <TableHeaderCell className="w-[2.5rem]">#</TableHeaderCell>
                 <TableHeaderCell>User</TableHeaderCell>
                 <TableHeaderCell>Device</TableHeaderCell>
                 <TableHeaderCell className="hidden lg:table-cell">
