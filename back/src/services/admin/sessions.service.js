@@ -8,45 +8,57 @@ export const getAllSessions = async ({ page = 1, limit = 10 }) => {
   const skip = (page - 1) * limit;
 
   const where = {
-    isValid: true, 
+    isValid: true,
   };
 
   const [sessions, total] = await Promise.all([
     prisma.session.findMany({
       skip,
       take: limit,
-      orderBy: { lastUsedAt: "desc" },
+
+      // ВАЖНО: стабильная сортировка (фикс “прыжков”)
+      orderBy: [
+        { lastUsedAt: "desc" },
+        { id: "desc" },
+      ],
+
       where,
-      include: { user: true },
+
+      select: {
+        id: true,
+        ip: true,
+        deviceId: true,
+        lastUsedAt: true,
+        createdAt: true,
+        isValid: true,
+
+        user: {
+          select: {
+            id: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
     }),
 
     prisma.session.count({ where }),
   ]);
 
-  return {
-    data: sessions.map((s) => ({
-      id: s.id,
-      user: {
-        id: s.user.id,
-        email: s.user.email,
-        role: s.user.role,
-      },
-      ip: s.ip,
-      deviceId: s.deviceId,
-      lastUsedAt: s.lastUsedAt,
-      createdAt: s.createdAt,
-      isValid: s.isValid,
-    })),
+  const pages = Math.ceil(total / limit);
 
+  return {
+    data: sessions,
     meta: {
       page,
       limit,
       total,
-      pages: Math.ceil(total / limit),
+      pages,
+      hasNextPage: page < pages,
+      hasPrevPage: page > 1,
     },
   };
 };
-
 /* =========================
    GET SESSION BY ID
 ========================= */

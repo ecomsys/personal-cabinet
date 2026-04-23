@@ -62,7 +62,7 @@ export default function Sessions() {
       <Card>
         {/* HEADER */}
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-lg font-semibold">Sessions</h1>
+          <h1 className="text-lg font-semibold">My sessions</h1>
 
           <Button variant="danger" size="sm" onClick={removeOthers}>
             Logout others
@@ -70,10 +70,10 @@ export default function Sessions() {
         </div>
 
         {/* LIST */}
-        <div className="divide-y">
+        <div>
 
           {sessions.length === 0 && (
-            <p className="text-sm text-gray-500 py-4">
+            <p className="text-sm text-gray-500 py-4 ">
               No active sessions
             </p>
           )}
@@ -81,7 +81,7 @@ export default function Sessions() {
           {sessions.map((s) => (
             <div
               key={s.id}
-              className="flex justify-between items-start py-3 gap-4"
+              className="flex justify-between items-start py-3 gap-4 border-b border-gray-200"
             >
               {/* INFO */}
               <div className="flex flex-col gap-1 min-w-0">
@@ -105,7 +105,7 @@ export default function Sessions() {
               {/* ACTION */}
               {!s.isCurrent && (
                 <Button
-                  variant="ghost"
+                  variant="danger"
                   size="sm"
                   onClick={() => removeSession(s.id)}
                 >

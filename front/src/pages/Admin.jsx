@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+
 import { PanelCard, Button, InlineMetrics, Tabs } from "@/components/ui";
-import { useAdminDashboard } from "@/hooks/useAdminDashboard";
+import { useAdminStats } from "@/hooks/useAdminStats";
 
 import { UsersTable } from "@/components/Admin/UsersTable";
 import { SessionsTable } from "@/components/Admin/SessionsTable";
@@ -11,17 +13,34 @@ export default function Admin() {
     SESSIONS: "sessions",
   };
 
-  const [tab, setTab] = useState(TABS.USERS);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  //  РЕАЛЬНОЕ значение из URL (без fallback)
+  const tabFromUrl = searchParams.get("tab");
+
+  //  вычисленное значение для UI
+  const currentTab = tabFromUrl || TABS.USERS;
+
+  //  инициализация URL при первом заходе
+  useEffect(() => {
+    if (!tabFromUrl) {
+      setSearchParams({ tab: TABS.USERS }, { replace: true });
+    }
+  }, [tabFromUrl, setSearchParams]);
+
+  const setTab = (value) => {
+    setSearchParams({ tab: value });
+  };
 
   const { stats, loading, refreshing, lastUpdated, refresh } =
-    useAdminDashboard();
+    useAdminStats();
 
   return (
     <PanelCard className="space-y-6">
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
       <div className="flex flex-col lg:flex-row gap-6 justify-between items-center lg:items-start">
         <div className="text-center lg:text-left">
-          <h1 className="text-xl font-semibold">Admin Dashboard</h1>
+          <h1 className="text-xl font-semibold">Admin Panel</h1>
 
           <p className="text-xs text-gray-500 mt-1">
             {lastUpdated
@@ -30,8 +49,7 @@ export default function Admin() {
           </p>
         </div>
 
-        <div className="flex flex-row items-center gap-3">
-          {/* ================= STATS (compact) ================= */}
+        <div className="flex flex-row md:items-center gap-3">
           <InlineMetrics
             metrics={[
               { label: "Users", value: loading ? "..." : stats.users },
@@ -41,18 +59,17 @@ export default function Admin() {
                 value: loading ? "..." : stats.activeSessions,
               },
             ]}
-          />
-
-          {/* ================= Refresh Button ================= */}
-          <Button onClick={refresh} disabled={refreshing}>
-            {refreshing ? "Refreshing..." : "Refresh"}
-          </Button>
+          >
+            <Button onClick={refresh} disabled={refreshing}>
+              {refreshing ? "Processing..." : "Refresh"}
+            </Button>
+          </InlineMetrics>
         </div>
       </div>
 
-      {/* ================= TABS ================= */}
+      {/* TABS */}
       <Tabs
-        value={tab}
+        value={currentTab}
         onChange={setTab}
         tabs={[
           { label: "Users", value: TABS.USERS },
@@ -60,10 +77,10 @@ export default function Admin() {
         ]}
       />
 
-      {/* ================= CONTENT ================= */}
+      {/* CONTENT */}
       <div>
-        {tab === TABS.USERS && <UsersTable />}
-        {tab === TABS.SESSIONS && <SessionsTable />}
+        {currentTab === TABS.USERS && <UsersTable />}
+        {currentTab === TABS.SESSIONS && <SessionsTable />}
       </div>
     </PanelCard>
   );

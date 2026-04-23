@@ -11,7 +11,7 @@ export default function Button({
   ...props
 }) {
   const baseStyles =
-    "cursor-pointer inline-flex items-center justify-center font-medium rounded-md transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed";
+    "cursor-pointer inline-flex items-center justify-center font-medium rounded-xl transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
     primary: "bg-black text-white hover:bg-gray-800",

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Spinner } from "@/components/ui";
+import { AVATAR_DEFAULT } from "../config/exports";
 
 export function AvatarUploader({ avatarUrl, onUpload, loading }) {
   const [preview, setPreview] = useState(null);
@@ -50,7 +51,7 @@ export function AvatarUploader({ avatarUrl, onUpload, loading }) {
 
       {/* clickable avatar */}
       <div onClick={openPicker} className="cursor-pointer relative group">
-        <Avatar src={preview || "/images/source/default-avatar.png"} size="xl" />
+        <Avatar src={preview || AVATAR_DEFAULT} size="xl" />
 
         {/* hover overlay */}
         <div className="cursor-pointer absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs">

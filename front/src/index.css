@@ -27,3 +27,65 @@ input:-webkit-autofill:active {
   scrollbar-width: none;
   /* Firefox */
 }
+
+body {
+  overflow-x: hidden;
+}
+
+
+/* Пример кастомного блока */
+.eco-container {
+    width: 100%;
+    max-inline-size: 120rem;
+    min-inline-size: 20rem;
+    margin-inline: auto;
+    padding-inline: 0.625rem;
+}
+
+@media (min-width: 30rem) {
+    .eco-container {
+        padding-inline: 0.9375rem;
+    }
+
+}
+
+@media (min-width: 40rem) {
+    .eco-container {
+        padding-inline: 1.25rem;
+    }
+
+}
+
+@media (min-width: 48rem) {
+    .eco-container {
+        padding-inline: 1.875rem;
+    }
+
+}
+
+@media (min-width: 64rem) {
+    .eco-container {
+        padding-inline: 1.875rem;
+    }
+
+}
+
+@media (min-width: 80rem) {
+    .eco-container {
+        padding-inline: 6rem;
+    }
+
+}
+
+@media (min-width: 96rem) {
+    .eco-container {
+        padding-inline: 7rem;
+    }
+
+}
+
+@media (min-width: 117.5rem) {
+    .eco-container {
+        padding-inline: 8rem;
+    }
+}

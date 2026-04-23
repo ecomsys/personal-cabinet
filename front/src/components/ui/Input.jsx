@@ -8,7 +8,7 @@ export default function Input({
   return (
     <input
       className={clsx(
-        "w-full border border-gray-500 rounded px-4 py-2.5 text-sm outline-none transition",
+        "w-full border border-gray-400 rounded-xl px-4 py-2.5 text-sm outline-none transition",
         "focus:ring-2 focus:ring-teal-900/20 focus:border-teal-800",
         
         // error state

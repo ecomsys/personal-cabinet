@@ -8,6 +8,7 @@
     "start": "node index.js",
     "prisma:admin": "node .npm/create-admin.js",
     "prisma:reset": "node .npm/reset-all.js",
+    "prisma:seed": "node .npm/seed.js",   
     "prisma:studio": "npx prisma studio",
     "prisma:migrate": "npx prisma migrate dev --name init"
   },

@@ -78,9 +78,9 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-lg mx-auto">
+     <div className="grid md:grid-cols-2 gap-6">
 
-      <Card className="space-y-6">
+      <Card className="w-full space-y-6">
 
         <h1 className="text-xl font-semibold text-center">
           Profile

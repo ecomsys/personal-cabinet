@@ -1,15 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
+import { FullscreenLoader } from "@/components/FullScreenLoader";
 
 export const PublicRoute = ({ children }) => {
   const { user, loading, logined } = useAuthStore();
 
   if (loading)
-    return (
-      <div className="h-screen flex items-center justify-center">
-        Public route Loading...
-      </div>
-    );
+    return <FullscreenLoader />;
 
   if (user && logined) {
     return <Navigate to="/" replace />;
