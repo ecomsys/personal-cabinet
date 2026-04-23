@@ -11,7 +11,7 @@ export default function OrientationGuard({ children }) {
       const shortSide = Math.min(width, height);
       const isLandscape = width > height;
 
-      // телефон: короткая сторона < 600px
+      // телефон: короткая сторона < 37.5rem
       const isPhoneSize = shortSide < 600;
 
       // проверка устройства по userAgent (TypeScript-friendly)

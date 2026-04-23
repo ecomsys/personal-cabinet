@@ -7,7 +7,7 @@ export default function Spinner({
   const sizes = {
     sm: "w-3 h-3 border-2",
     md: "w-4 h-4 border-2",
-    lg: "w-6 h-6 border-[3px]",
+    lg: "w-6 h-6 border-[0.1875rem]",
   };
 
   return (

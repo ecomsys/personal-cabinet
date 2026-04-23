@@ -30,9 +30,9 @@ export default function FormField({
 
       {child}
 
-      <div className="min-h-[14px]">
+      <div className="min-h-[0.875rem]">
         {error && (
-          <span className="text-[11px] text-red-500 leading-tight">
+          <span className="text-[0.6875rem] text-red-500 leading-tight">
             {error}
           </span>
         )}
