@@ -1,7 +1,7 @@
 export const Table = ({ children, className = "" }) => {
   return (
-    <div className="w-full overflow-x-auto">
-      <table className={`w-full text-sm ${className}`}>
+    <div className="w-full max-w-full overflow-x-auto min-w-0">
+      <table className={`min-w-max text-sm ${className}`}>
         {children}
       </table>
     </div>
@@ -24,9 +24,9 @@ export const TableBody = ({ children }) => {
   );
 };
 
-export const TableRow = ({ children }) => {
+export const TableRow = ({ children , className}) => {
   return (
-    <tr className="hover:bg-gray-50 transition">
+    <tr className={`${className} hover:bg-gray-50 transition`}>
       {children}
     </tr>
   );

@@ -20,18 +20,10 @@ export default {
     "xl:hidden",
     "2xl:hidden",
     "3xl:hidden",
+    "overflow-x-hidden"
   ],
 
-  theme: {
-    screens: {
-      xs: "30rem",
-      sm: "40rem",
-      md: "48rem",
-      lg: "64rem",
-      xl: "80rem",
-      "2xl": "96rem",
-      "3xl": "117.5rem",
-    },
+  theme: {   
     extend: {
       // colors
       colors: {
@@ -44,10 +36,10 @@ export default {
         blue: "#007aff",
       },
       //   fonts
-      fontFamily: {
-        inter: ["Inter", "sans-serif"],
-        montserrat: ["Montserrat", "sans-serif"],
-      },
+      // fontFamily: {
+      //   inter: ["Inter", "sans-serif"],
+      //   montserrat: ["Montserrat", "sans-serif"],
+      // },
       // animmation
       keyframes: {
         overlayShow: {

@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { getUsersAdmin, deleteUserAdmin } from "@/api/admin.api.js";
-
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 import {
@@ -13,35 +11,36 @@ import {
   Button,
   RoleBadge,
   MobileList,
+  Pagination,
 } from "@/components/ui";
 
 import { useModalStore } from "@/store/modal.store.js";
+import { useAdminStore } from "@/store/admin.store.js";
 
-/* ========================= */
 export const UsersTable = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [deletingId, setDeletingId] = useState(null);
+  const {
+    users,
+    admins,
+    usersPage,
+    usersMeta,
+    usersLoading,
+    deletingUserId,
+    fetchUsers,
+    setUsersPage,
+    deleteUser,
+  } = useAdminStore();
 
   const openConfirm = useModalStore((s) => s.openConfirm);
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const data = await getUsersAdmin();
-      setUsers(data || []);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const baseIndex = (usersPage - 1) * 10;
 
-  const sortedUsers = [...users].sort((a, b) => {
-    if (a.role === "admin" && b.role !== "admin") return -1;
-    if (a.role !== "admin" && b.role === "admin") return 1;
+  const regularUsers = users;
 
-    // вторичная сортировка (например по дате)
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
+  /* ================= INIT ================= */
+  useEffect(() => {
+    fetchUsers(usersPage);
+  }, [usersPage]);
+
 
   /* ================= DELETE ================= */
   const handleDelete = (user) => {
@@ -51,28 +50,17 @@ export const UsersTable = () => {
       confirmText: "Delete",
       onConfirm: async () => {
         try {
-          setDeletingId(user.id);
-
-          await deleteUserAdmin(user.id);
-
-          setUsers((prev) => prev.filter((u) => u.id !== user.id));
-
+          await deleteUser(user.id);
           toast.success("User deleted");
         } catch {
           toast.error("Failed to delete user");
-        } finally {
-          setDeletingId(null);
         }
       },
     });
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
   /* ================= EMPTY ================= */
-  if (!loading && !users.length) {
+  if (!usersLoading && !users.length) {
     return (
       <div className="text-center py-10 text-sm text-gray-500">
         No users found
@@ -83,56 +71,111 @@ export const UsersTable = () => {
   return (
     <>
       {/* ================= MOBILE ================= */}
-      <MobileList
-        items={sortedUsers}
-        renderItem={(user) => (
-          <>
-            {/* EMAIL */}
-            <div className="font-medium truncate">{user.email}</div>
+      <div className="space-y-3">
+        {/* ADMINS */}
+        <MobileList
+          items={admins}
+          renderItem={(user) => (
+            <>
+              <div className="flex items-center justify-between">
+                <span className="font-medium truncate max-w-[75%]">
+                  {user.email}
+                </span>
 
-            {/* ROLE */}
-            <div className="mt-1">
-              <RoleBadge role={user.role} />
-            </div>
+                <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded">
+                  SYSTEM
+                </span>
+              </div>
 
-            {/* INFO */}
-            <div className="mt-2 text-sm text-gray-500">
-              Created: {new Date(user.createdAt).toLocaleDateString()}
-            </div>
+              <div className="mt-1">
+                <RoleBadge role={user.role} />
+              </div>
 
-            {/* ACTION */}
-            {user.role !== "admin" && (
+              <div className="mt-2 text-sm text-gray-500">
+                Created: {new Date(user.createdAt).toLocaleDateString()}
+              </div>
+            </>
+          )}
+        />
+
+        {/* USERS */}
+        <MobileList
+          items={regularUsers}
+          renderItem={(user, index) => (
+            <>
+              <div className="flex items-center gap-2">
+                <span>{baseIndex + index + 1}.</span>
+
+                <span className="font-medium truncate">
+                  {user.email}
+                </span>
+              </div>
+
+              <div className="mt-1">
+                <RoleBadge role={user.role} />
+              </div>
+
+              <div className="mt-2 text-sm text-gray-500">
+                Created: {new Date(user.createdAt).toLocaleDateString()}
+              </div>
+
               <Button
                 className="mt-3 w-full"
                 variant="danger"
-                disabled={deletingId === user.id}
+                disabled={deletingUserId === user.id}
                 onClick={() => handleDelete(user)}
               >
-                {deletingId === user.id ? "Deleting..." : "Delete"}
+                {deletingUserId === user.id ? "Deleting..." : "Delete"}
               </Button>
-            )}
-          </>
-        )}
-      />
+            </>
+          )}
+        />
+      </div>
 
       {/* ================= DESKTOP ================= */}
       <div className="hidden md:block">
         <div className="w-full overflow-x-auto">
-          <Table>
+          <Table className="table-fixed w-full">
             <TableHead>
-              <tr>               
+              <tr>
+                <TableHeaderCell className="w-[30px]">#</TableHeaderCell>
                 <TableHeaderCell>Email</TableHeaderCell>
                 <TableHeaderCell>Role</TableHeaderCell>
                 <TableHeaderCell>Created</TableHeaderCell>
-                <TableHeaderCell>Actions</TableHeaderCell>
+                <TableHeaderCell className="text-right">
+                  Actions
+                </TableHeaderCell>
               </tr>
             </TableHead>
 
             <TableBody>
-              {sortedUsers.map((user) => (
+              {/* ADMINS */}
+              {admins.map((user) => (
+                <TableRow key={user.id} className="bg-yellow-100">
+                  <TableCell />
+                  <TableCell className="font-medium truncate">
+                    {user.email}
+                  </TableCell>
+                  <TableCell>
+                    <RoleBadge role={user.role} />
+                  </TableCell>
+                  <TableCell className="text-gray-500">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell />
+                </TableRow>
+              ))}
+
+              {/* USERS */}
+              {regularUsers.map((user, index) => (
                 <TableRow key={user.id}>
-                 
-                  <TableCell className="font-medium">{user.email}</TableCell>
+                  <TableCell className="text-gray-400">
+                    {baseIndex + index + 1}
+                  </TableCell>
+
+                  <TableCell className="font-medium truncate">
+                    {user.email}
+                  </TableCell>
 
                   <TableCell>
                     <RoleBadge role={user.role} />
@@ -142,16 +185,14 @@ export const UsersTable = () => {
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>
 
-                  <TableCell>
-                    {user.role !== "admin" && (
-                      <Button
-                        variant="danger"
-                        disabled={deletingId === user.id}
-                        onClick={() => handleDelete(user)}
-                      >
-                        {deletingId === user.id ? "..." : "Delete"}
-                      </Button>
-                    )}
+                  <TableCell className="text-right">
+                    <Button
+                      variant="danger"
+                      disabled={deletingUserId === user.id}
+                      onClick={() => handleDelete(user)}
+                    >
+                      {deletingUserId === user.id ? "..." : "Delete"}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -159,6 +200,16 @@ export const UsersTable = () => {
           </Table>
         </div>
       </div>
+
+      {/* ================= PAGINATION ================= */}
+      <Pagination
+        page={usersPage}
+        totalPages={usersMeta?.pages || 1}
+        onChange={(p) => {
+          if (p < 1 || p > (usersMeta?.pages || 1)) return;
+          setUsersPage(p);
+        }}
+      />
     </>
   );
 };

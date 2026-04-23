@@ -2,19 +2,65 @@ import { prisma } from "../../config/prisma.js";
 import { ApiError } from "../../utils/api-error.js";
 
 /* =========================
-   GET ALL USERS
+   GET ALL USERS (PAGINATED)
 ========================= */
-export const getAllUsers = async () => {
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      sessions: true,
-    },
+export const getAllUsers = async ({ page = 1, limit = 10 }) => {
+  const skip = (page - 1) * limit;
+
+  const [admins, users, totalUsers] = await Promise.all([
+    prisma.user.findMany({
+      where: { role: "admin" },
+      orderBy: { createdAt: "desc" },
+      include: {
+        sessions: {
+          select: {
+            id: true,
+            isValid: true,
+            lastUsedAt: true,
+          },
+        },
+      },
+    }),
+
+    prisma.user.findMany({
+      where: { role: { not: "admin" } },
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        sessions: {
+          select: {
+            id: true,
+            isValid: true,
+            lastUsedAt: true,
+          },
+        },
+      },
+    }),
+
+    prisma.user.count({
+      where: { role: { not: "admin" } },
+    }),
+  ]);
+
+  const mapUser = (u) => ({
+    ...u,
+    sessionsCount: u.sessions?.length || 0,
+    activeSessions: u.sessions?.filter((s) => s.isValid)?.length || 0,
   });
 
-  return users.map(({ password, ...user }) => user);
-};
+  return {
+    admins: admins.map(mapUser),
+    users: users.map(mapUser),
 
+    meta: {
+      page,
+      limit,
+      total: totalUsers,
+      pages: Math.ceil(totalUsers / limit),
+    },
+  };
+};
 /* =========================
    GET USER BY ID
 ========================= */

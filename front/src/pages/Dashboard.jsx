@@ -8,8 +8,8 @@ export default function Dashboard() {
   // const logout = useAuthStore((s) => s.logout);
 
   return (
-    <div className="p-6 flex gap-5">
-      <Card className="w-full max-w-md">
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card className="w-full ">
         
         <CardHeader>
           <h1 className="text-xl font-semibold">Info</h1>

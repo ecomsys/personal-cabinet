@@ -18,7 +18,7 @@ export function Card({
   return (
     <div
       className={clsx(
-        "p-6 bg-white border border-gray-500 rounded-xl shadow-lg",
+        "p-4 md:p-6 bg-white rounded-xl shadow-lg",
         className
       )}
       {...props}

@@ -4,9 +4,9 @@ export default function MobileList({ items = [], renderItem }) {
 
   return (
     <div className="space-y-3 md:hidden">
-      {items.map((item) => (
+      {items.map((item, index) => (
         <div key={item.id} className="border border-gray-300 rounded-xl p-3 bg-white">
-          {renderItem(item)}
+          {renderItem(item, index)}
         </div>
       ))}
     </div>

@@ -3,10 +3,14 @@ import { request } from "./request";
 /* =========================
    ADMIN - GET USERS
 ========================= */
-export const getUsersAdmin = async () => {
+export const getUsersAdmin = async ({ page = 1, limit = 10 } = {}) => {
   const res = await request({
     method: "GET",
     url: "/admin/users",
+    params: {
+      page,
+      limit,
+    },
   });
 
   return res.data.data;
