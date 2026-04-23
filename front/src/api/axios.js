@@ -2,7 +2,8 @@ import axios from "axios";
 import { v4 as uuid } from "uuid";
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  // baseURL: "http://localhost:5000/api",
+  baseURL: "/api",
   withCredentials: true,
 });
 
