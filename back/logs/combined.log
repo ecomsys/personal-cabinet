@@ -586,3 +586,77 @@
 {"level":"info","message":{"ip":"::1","method":"GET","requestId":"8f4cf7fb-e422-44c2-9155-7ab718c917ea","time":"2026-04-23T14:55:02.536Z","type":"HTTP_REQUEST","url":"/api/admin/stats"}}
 {"level":"info","message":{"deleted":41,"event":"SESSION_CLEANUP","expiredDate":"2026-03-24T15:00:00.043Z","type":"CRON"}}
 {"level":"info","message":{"event":"SESSION_CLEANUP_SUCCESS","type":"CRON"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"ddd85c26-74d8-4137-bba9-fd53ae6c0c35","time":"2026-04-24T06:26:46.673Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"warn","message":{"deviceId":"1af27527-6122-470e-bc3b-b0db55bc6ae1","event":"NEW_DEVICE","ip":"::1","type":"SECURITY","userId":"e5bfb71f-f43f-4e45-84af-b78b93daf725"}}
+{"level":"warn","message":{"event":"DEVICE_MISMATCH","ip":"::1","type":"SECURITY","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36","userId":"e5bfb71f-f43f-4e45-84af-b78b93daf725"}}
+{"code":"AUTH_DEVICE_MISMATCH","level":"error","message":"Device mismatch","method":"POST","requestId":"ddd85c26-74d8-4137-bba9-fd53ae6c0c35","status":401,"time":"2026-04-24T06:26:47.212Z","type":"ERROR","url":"/api/auth/refresh"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"1b1b395e-f82b-4b71-8982-2fb84f04d5b8","time":"2026-04-24T06:26:53.163Z","type":"HTTP_REQUEST","url":"/api/auth/login"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"1e6adbec-937a-422b-aaf3-fea0be078d52","time":"2026-04-24T06:28:22.524Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"f6f48767-69a8-4076-be47-ac9503d114db","time":"2026-04-24T06:28:22.585Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"edab87e2-d823-425c-889f-70172e1ff983","time":"2026-04-24T06:28:22.595Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"03a96ce0-2bd7-4224-8d95-fea06d4f49f9","time":"2026-04-24T06:36:42.670Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"79858dae-1fe4-46d7-921f-9a7e0a64bd72","time":"2026-04-24T06:36:43.224Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"79858dae-1fe4-46d7-921f-9a7e0a64bd72","status":400,"time":"2026-04-24T06:36:43.231Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"aa2ec2b8-c47f-462c-ab91-5a00c7a190c1","time":"2026-04-24T06:37:28.824Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"962ff257-388f-46a2-9d7d-f9e71eec476e","time":"2026-04-24T06:37:28.861Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"962ff257-388f-46a2-9d7d-f9e71eec476e","status":400,"time":"2026-04-24T06:37:28.865Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"f41c46ed-b8a5-474e-9e5e-74117cffb3a6","time":"2026-04-24T06:37:53.588Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"487f7722-87bc-40f5-aa67-5dcfb1a88ade","time":"2026-04-24T06:37:53.677Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"e829eaca-cf59-4630-993a-69da74a440ab","time":"2026-04-24T06:37:53.685Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"72046124-7785-4470-8774-47ac2df50834","time":"2026-04-24T06:38:06.491Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"13ce402f-2d5e-4f27-bb89-a976d358d52f","time":"2026-04-24T06:38:06.520Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"13ce402f-2d5e-4f27-bb89-a976d358d52f","status":400,"time":"2026-04-24T06:38:06.524Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"db87e3b3-e2ad-466d-826e-c41187960b14","time":"2026-04-24T06:38:09.227Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"93100e57-2a8f-4148-b608-09efdcdcafce","time":"2026-04-24T06:38:09.269Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"65696873-a0db-4137-8d15-282825886ebc","time":"2026-04-24T06:38:09.275Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"89ddcedf-b741-4b53-aba8-ead54b6eb5aa","time":"2026-04-24T06:42:26.990Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"88bb845f-1f8f-4e1d-aab9-ba32e79d5237","time":"2026-04-24T06:42:27.280Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"fb2eec86-4886-466e-a742-fbf151a169d4","time":"2026-04-24T06:42:27.289Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"dd85097f-8d5b-4476-a036-c7c46c084165","time":"2026-04-24T06:42:27.310Z","type":"HTTP_REQUEST","url":"/uploads/avatars/e5bfb71f-f43f-4e45-84af-b78b93daf725-1777012686494.png"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"c75f37a8-729e-459b-84d8-b6607a6e4cb9","time":"2026-04-24T06:42:27.364Z","type":"HTTP_REQUEST","url":"/uploads/avatars/e5bfb71f-f43f-4e45-84af-b78b93daf725-1777012686494.png"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"0f7e880b-08e5-4261-9112-252de88e3f1a","time":"2026-04-24T06:42:30.276Z","type":"HTTP_REQUEST","url":"/api/auth/login"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"8e512d8f-8528-438d-980d-b3077dd98e7a","time":"2026-04-24T06:42:30.557Z","type":"HTTP_REQUEST","url":"/uploads/avatars/e5bfb71f-f43f-4e45-84af-b78b93daf725-1777012686494.png"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"528e8f7b-8b7f-4029-bbbd-a2b1cf1cc4fb","time":"2026-04-24T06:42:32.820Z","type":"HTTP_REQUEST","url":"/uploads/avatars/e5bfb71f-f43f-4e45-84af-b78b93daf725-1777012686494.png"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"e7908281-9516-462e-b17a-859831279b15","time":"2026-04-24T06:42:32.961Z","type":"HTTP_REQUEST","url":"/uploads/avatars/e5bfb71f-f43f-4e45-84af-b78b93daf725-1777012686494.png"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"d0cd6ab1-1c31-4d5b-850d-463228253242","time":"2026-04-24T06:42:41.417Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"15294329-4dc1-4256-8f07-fd719d3cbd55","time":"2026-04-24T06:42:41.463Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"15294329-4dc1-4256-8f07-fd719d3cbd55","status":400,"time":"2026-04-24T06:42:41.474Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"b6cca42b-a59a-4b8d-bf78-676a4e8d8732","time":"2026-04-24T06:42:44.332Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"ec872ab2-3fb0-47e3-b84d-a472f08ecfcd","time":"2026-04-24T06:42:44.373Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"30604ce9-6fcb-4bc4-b27b-0968fa778965","time":"2026-04-24T06:42:44.379Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"5c5b1d65-21a2-4269-a9d3-4b245f4b4859","time":"2026-04-24T06:42:54.475Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"5c5b1d65-21a2-4269-a9d3-4b245f4b4859","status":400,"time":"2026-04-24T06:42:54.477Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"ea36edc7-6d4c-4b12-aadd-342a0ed851d5","time":"2026-04-24T06:43:05.061Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"f366b61f-24eb-4cfc-b0ce-6d054e59cec6","time":"2026-04-24T06:43:05.101Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"34fff8f6-6d4c-44da-90fe-6263721f4b6d","time":"2026-04-24T06:43:05.110Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"95ad8dec-6831-4a51-8b65-9e766bfd3701","time":"2026-04-24T06:49:04.728Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"ae4b5592-07e6-4b08-9cdc-7a398fe1386a","time":"2026-04-24T06:49:05.042Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"9dede9f0-3ffe-496e-91d2-a81dd2a5fa3f","time":"2026-04-24T06:49:05.050Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"056c92dc-1a78-4d4f-a053-a09234c7449f","time":"2026-04-24T06:49:10.844Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"75f83159-7fdd-481b-9adb-6dc816cd0412","time":"2026-04-24T06:49:10.923Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"code":"VALIDATION_ERROR","level":"error","message":"Validation error","method":"PATCH","requestId":"75f83159-7fdd-481b-9adb-6dc816cd0412","status":400,"time":"2026-04-24T06:49:10.943Z","type":"ERROR","url":"/api/user/profile"}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"51ba795c-7b51-4abd-8b43-29f5d4a41e4c","time":"2026-04-24T06:49:21.323Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"f0da2977-6ff6-466c-b9db-d8d2ceff6fd7","time":"2026-04-24T06:49:21.369Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"a1aa14b3-4371-43ca-a8d7-3b74f99925c4","time":"2026-04-24T06:49:21.376Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"b7344350-6478-4cf4-878e-62a5dce09425","time":"2026-04-24T06:57:55.634Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"7229b5a8-8c4c-4717-9f6b-260a3012ad03","time":"2026-04-24T06:57:55.924Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"995b64ce-9f6e-4043-a501-c87630b142d3","time":"2026-04-24T06:57:55.933Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"7ac47d28-05c4-4298-b65d-ec8d25f64c36","time":"2026-04-24T06:58:05.172Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"fb0f11ef-15e8-4fda-b593-6df268f3db06","time":"2026-04-24T06:58:17.494Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"4541a7e5-58ae-4876-b70a-06d0e3cfb92e","time":"2026-04-24T06:58:42.836Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"7c3bf23b-1469-40aa-bd92-a4b015e5883f","time":"2026-04-24T06:58:57.693Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"c2503548-d7ec-4fba-ba17-b34c8eebe42c","time":"2026-04-24T06:58:57.738Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}
+{"level":"info","message":{"deleted":10,"event":"SESSION_CLEANUP","expiredDate":"2026-03-25T07:00:00.088Z","type":"CRON"}}
+{"level":"info","message":{"event":"SESSION_CLEANUP_SUCCESS","type":"CRON"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"4677fe8c-51fb-4a1e-bfc4-8025d289b999","time":"2026-04-24T07:01:07.919Z","type":"HTTP_REQUEST","url":"/api/user/sessions"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"4e0e37b8-202a-498f-bb6d-19e706d71914","time":"2026-04-24T07:01:07.949Z","type":"HTTP_REQUEST","url":"/api/user/sessions"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"80d13136-e80f-414e-b823-3cba80ba9093","time":"2026-04-24T07:02:09.734Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"a43a64f1-ebbe-4340-bdbd-1634d166ffe7","time":"2026-04-24T07:02:09.811Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"14a7588f-774d-4852-a6c7-6268b5510e0a","time":"2026-04-24T07:02:09.820Z","type":"HTTP_REQUEST","url":"/api/admin/stats"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"eaf8c44a-6532-442f-8625-2665f8d0d12c","time":"2026-04-24T07:02:09.835Z","type":"HTTP_REQUEST","url":"/api/admin/stats"}}
+{"level":"info","message":{"ip":"::1","method":"DELETE","requestId":"04a0aa85-085d-47ef-8e7d-ce54f270d7a3","time":"2026-04-24T07:02:20.369Z","type":"HTTP_REQUEST","url":"/api/admin/users/cfe16044-165f-463d-82db-43c6a6bb99df"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"80acbd08-6a7d-411d-8018-d84fb119a60d","time":"2026-04-24T07:02:20.428Z","type":"HTTP_REQUEST","url":"/api/admin/stats"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"efdb91cb-0ea9-4e98-bf24-73df205cbaf8","time":"2026-04-24T07:02:24.700Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=2&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"f92ea1b8-58a8-4dfc-9f6c-d307a9d3c4e7","time":"2026-04-24T07:02:24.713Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=2&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"f681a430-f2f4-4eac-b4da-e8ff66218f52","time":"2026-04-24T07:02:26.701Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"8731e0de-48a0-4b99-890c-295318e32ef4","time":"2026-04-24T07:02:26.711Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}

@@ -1,5 +1,8 @@
 // src/services/user.service.js
 
+import fs from "fs";
+import path from "path";
+
 import { prisma } from "../config/prisma.js";
 import { ApiError } from "../utils/api-error.js";
 import { comparePassword, hashPassword } from "../utils/hash.js";
@@ -152,6 +155,7 @@ export const changeEmail = async (userId, newEmail, password, sessionId) => {
   return true;
 };
 
+
 /*================================================================================
 Смена аватара
 ================================================================================*/
@@ -167,15 +171,34 @@ export const updateAvatar = async (userId, filename, req) => {
   const baseUrl = getBaseUrl(req);
   const avatarUrl = `${baseUrl}/uploads/avatars/${filename}`;
 
+  //  вытаскиваем имя старого файла
+  let oldFilename = null;
+  if (user.avatarUrl) {
+    oldFilename = user.avatarUrl.split("/uploads/avatars/")[1];
+  }
+
+  //  обновляем пользователя
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: { avatarUrl },
   });
 
+  //  удаляем старый файл (если был)
+  if (oldFilename) {
+    const filePath = path.join("uploads/avatars", oldFilename);
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error("Ошибка при удалении старого аватара:", err);
+      }
+    });
+  }
+
   const { password, ...safeUser } = updatedUser;
 
   return safeUser;
 };
+
 
 /*================================================================================
 Получить все сессии

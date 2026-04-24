@@ -54,10 +54,18 @@ export default function Profile() {
         avatarUrl = avatarRes.avatarUrl;
       }
 
-      const profileRes = await updateProfileUser({
-        name,
-        status,
-      });
+      //  формируем payload нормально
+      const payload = {};
+
+      if (name.trim()) payload.name = name.trim();
+      if (status.trim()) payload.status = status.trim();
+
+      let profileRes = {};
+
+      // вызываем только если есть что обновлять
+      if (Object.keys(payload).length > 0) {
+        profileRes = await updateProfileUser(payload);
+      }
 
       const updatedUser = {
         ...user,
@@ -78,13 +86,9 @@ export default function Profile() {
   };
 
   return (
-     <div className="grid md:grid-cols-2 gap-6">
-
+    <div className="grid md:grid-cols-2 gap-6">
       <Card className="w-full space-y-6">
-
-        <h1 className="text-xl font-semibold text-center">
-          Profile
-        </h1>
+        <h1 className="text-xl font-semibold text-center">Profile</h1>
 
         {/* AVATAR */}
         <div className="flex flex-col items-center space-y-4">
@@ -94,18 +98,13 @@ export default function Profile() {
             onUpload={handleAvatarSelect}
           />
 
-          <p className="text-sm text-gray-500">
-            Click avatar to change
-          </p>
+          <p className="text-sm text-gray-500">Click avatar to change</p>
         </div>
 
         {/* FORM */}
         <div className="space-y-4">
           <FormField label="Name" error={error}>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
           </FormField>
 
           <FormField label="Status" error={error}>
@@ -126,9 +125,7 @@ export default function Profile() {
         >
           {loading ? "Saving..." : "Save changes"}
         </Button>
-
       </Card>
-
     </div>
   );
 }

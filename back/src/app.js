@@ -19,7 +19,7 @@ import adminRoutes from "./routes/admin.routes.js";
 let isCleaning = false;
 const app = express();
 
-app.set("trust proxy", 1);
+app.set("trust proxy", true);
 
 app.use(requestIdMiddleware);
 
@@ -48,7 +48,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.use(express.json());
 app.use(cookieParser());
