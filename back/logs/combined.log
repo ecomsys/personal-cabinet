@@ -660,3 +660,11 @@
 {"level":"info","message":{"ip":"::1","method":"GET","requestId":"f92ea1b8-58a8-4dfc-9f6c-d307a9d3c4e7","time":"2026-04-24T07:02:24.713Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=2&limit=10"}}
 {"level":"info","message":{"ip":"::1","method":"GET","requestId":"f681a430-f2f4-4eac-b4da-e8ff66218f52","time":"2026-04-24T07:02:26.701Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}
 {"level":"info","message":{"ip":"::1","method":"GET","requestId":"8731e0de-48a0-4b99-890c-295318e32ef4","time":"2026-04-24T07:02:26.711Z","type":"HTTP_REQUEST","url":"/api/admin/users?page=1&limit=10"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"702d92fc-f6a5-429e-a88b-d3d6e03046ac","time":"2026-04-24T08:01:37.898Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"e931ef9d-4693-4fab-bd49-627cef7de4e3","time":"2026-04-24T08:01:38.176Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"25fb04c0-e397-4375-93ca-622d93b74300","time":"2026-04-24T08:01:38.183Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"POST","requestId":"00ece0b3-f7c4-462b-b994-386b3d1db8ee","time":"2026-04-24T08:03:45.698Z","type":"HTTP_REQUEST","url":"/api/auth/refresh"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"1da3cf80-da1b-4391-8c0a-c6699d275b7d","time":"2026-04-24T08:03:46.002Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"GET","requestId":"93c4b47f-7c56-4eb4-9ed0-1203999f0cac","time":"2026-04-24T08:03:46.012Z","type":"HTTP_REQUEST","url":"/api/user/me"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"c8454201-0d8d-4f2e-a246-c101979c8f7c","time":"2026-04-24T08:03:55.532Z","type":"HTTP_REQUEST","url":"/api/user/avatar"}}
+{"level":"info","message":{"ip":"::1","method":"PATCH","requestId":"7518dc60-6af1-4e9d-bd3e-9ceaae742ff2","time":"2026-04-24T08:03:55.598Z","type":"HTTP_REQUEST","url":"/api/user/profile"}}

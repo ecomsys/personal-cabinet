@@ -1,9 +1,10 @@
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 
+const isDev = import.meta.env.DEV;
+
 export const api = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "/api",
+  baseURL: isDev ? "http://localhost:3000/api" : "/api",
   withCredentials: true,
 });
 
