@@ -33,7 +33,7 @@ export function CardHeader({
   className = "",
 }) {
   return (
-    <div className={clsx("px-4 py-3 border-b", className)}>
+    <div className={clsx("px-4 py-3 border-b border-gray-200", className)}>
       {children}
     </div>
   );

@@ -18,6 +18,7 @@ import adminRoutes from "./routes/admin.routes.js";
 
 let isCleaning = false;
 const isProd = process.env.NODE_ENV === "production";
+const prodUrl = process.env.PROD_URL?.trim();
 
 const app = express();
 
@@ -25,8 +26,8 @@ app.set("trust proxy", 1);
 
 app.use(requestIdMiddleware);
 
-const allowedOrigins = isProd
-  ? ["https://cabinet.ecomsys.ru"]
+const allowedOrigins = isProd && prodUrl
+  ? [prodUrl]
   : ["http://localhost:5173", "http://localhost:4173"];
 
 app.use(
